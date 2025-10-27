@@ -1,7 +1,8 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 // use your own icon import if react-icons is not available
-// import { GoArrowUpRight } from 'react-icons/go';
+import { GoArrowUpRight } from 'react-icons/go';
 import './Navbar.css';
 
 type CardNavLink = {
@@ -176,16 +177,19 @@ const CardNav: React.FC<CardNavProps> = ({
           </div>
 
           <div className="logo-container">
-            <img src={logo} alt={logoAlt} className="logo" />
+            <Link to="/" aria-label="Home">
+              <img src={logo} alt={logoAlt} className="logo" />
+            </Link>
           </div>
 
-          <button
-            type="button"
+          <Link
+            to="/start"
             className="card-nav-cta-button"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+            aria-label="Get Started"
           >
             Get Started
-          </button>
+          </Link>
         </div>
 
         <div className="card-nav-content" aria-hidden={!isExpanded}>
@@ -200,7 +204,7 @@ const CardNav: React.FC<CardNavProps> = ({
               <div className="nav-card-links">
                 {item.links?.map((lnk, i) => (
                   <a key={`${lnk.label}-${i}`} className="nav-card-link" href={lnk.href} aria-label={lnk.ariaLabel}>
-                    {/* <GoArrowUpRight className="nav-card-link-icon" aria-hidden="true" /> */}
+                    <GoArrowUpRight className="nav-card-link-icon" aria-hidden="true" />
                     {lnk.label}
                   </a>
                 ))}
