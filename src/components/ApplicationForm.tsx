@@ -23,8 +23,6 @@ export default function ApplicationForm() {
     }
     const allowed = [
       "application/pdf",
-      "application/msword",
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ];
     if (!allowed.includes(file.type)) {
       setError("Only PDF, DOC, or DOCX files are allowed.");
