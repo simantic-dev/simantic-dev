@@ -5,7 +5,7 @@ import './App.css';
 
 import ApplicationForm from './components/ApplicationForm';
 
-function App() {
+export default function App() {
   const [count, setCount] = useState(0)
 
   return (
@@ -16,5 +16,3 @@ function App() {
     </main>
   )
 }
-
-export default App

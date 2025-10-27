@@ -1,6 +1,6 @@
 import './Home.css';
 
-function Home() {
+export default function Home() {
     return (
         <main className='home'>
             <h1 className="silkscreen-regular">Simantic</h1>
@@ -9,5 +9,3 @@ function Home() {
         </main>
     )
 }
-
-export default Home;
