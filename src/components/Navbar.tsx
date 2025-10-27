@@ -49,35 +49,38 @@ const CardNav: React.FC<CardNavProps> = ({
   const calculateHeight = () => {
     const navEl = navRef.current;
     if (!navEl) return 260;
+    // Measure the content's intrinsic height so the animated nav height
+    // expands to fit whatever cards are rendered. Temporarily make the
+    // content visible and static to read its scrollHeight, then restore
+    // previous inline styles.
+    const contentEl = navEl.querySelector('.card-nav-content') as HTMLElement;
+    if (contentEl) {
+      const wasVisible = contentEl.style.visibility;
+      const wasPointerEvents = contentEl.style.pointerEvents;
+      const wasPosition = contentEl.style.position;
+      const wasHeight = contentEl.style.height;
 
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    if (isMobile) {
-      const contentEl = navEl.querySelector('.card-nav-content') as HTMLElement;
-      if (contentEl) {
-        const wasVisible = contentEl.style.visibility;
-        const wasPointerEvents = contentEl.style.pointerEvents;
-        const wasPosition = contentEl.style.position;
-        const wasHeight = contentEl.style.height;
+      contentEl.style.visibility = 'visible';
+      contentEl.style.pointerEvents = 'auto';
+      contentEl.style.position = 'static';
+      contentEl.style.height = 'auto';
 
-        contentEl.style.visibility = 'visible';
-        contentEl.style.pointerEvents = 'auto';
-        contentEl.style.position = 'static';
-        contentEl.style.height = 'auto';
+      // force reflow so scrollHeight is up to date
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      contentEl.offsetHeight;
 
-        contentEl.offsetHeight;
+      const topBar = 60;
+      const padding = 16;
+      const contentHeight = contentEl.scrollHeight;
 
-        const topBar = 60;
-        const padding = 16;
-        const contentHeight = contentEl.scrollHeight;
+      contentEl.style.visibility = wasVisible;
+      contentEl.style.pointerEvents = wasPointerEvents;
+      contentEl.style.position = wasPosition;
+      contentEl.style.height = wasHeight;
 
-        contentEl.style.visibility = wasVisible;
-        contentEl.style.pointerEvents = wasPointerEvents;
-        contentEl.style.position = wasPosition;
-        contentEl.style.height = wasHeight;
-
-        return topBar + contentHeight + padding;
-      }
+      return topBar + contentHeight + padding;
     }
+
     return 260;
   };
 

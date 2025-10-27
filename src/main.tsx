@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, href } from 'react-router-dom';
 import './index.css';
 import App from './App.tsx';
 import Home from './pages/Home.tsx';
@@ -31,11 +31,17 @@ const items = [
     bgColor: "#271E37", 
     textColor: "#fff",
     links: [
-      { label: "Email", ariaLabel: "Email us" },
-      { label: "Twitter", ariaLabel: "Twitter" },
-      { label: "LinkedIn", ariaLabel: "LinkedIn" }
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/simantic", ariaLabel: "LinkedIn" }
     ]
-  }
+  },
+  {
+    label: "Contact",
+    bgColor: "#271E37", 
+    textColor: "#fff",
+    links: [
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/simantic", ariaLabel: "LinkedIn" }
+    ]
+  },
 ];
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
