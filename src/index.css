@@ -15,6 +15,11 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+.silkscreen-thin {
+  font-family: "Silkscreen", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
 .silkscreen-bold {
   font-family: "Silkscreen", sans-serif;
   font-weight: 700;
