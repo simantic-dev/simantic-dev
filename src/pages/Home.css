@@ -1,12 +1,12 @@
 /* Styles for the Home page */
 .home {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
-	align-items: center;
-	justify-content: center;
-	padding: 48px 16px;
-	text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  text-align: center;
 }
 
 .join-waitlist-button {
@@ -28,4 +28,23 @@
 
 .silkscreen-regular {
 	margin: 0;
+}
+
+/* Scoped heading sizes to avoid Bootstrap's global heading scale overriding
+	 the design. These apply only on the Home page. Adjust to taste. */
+.home h1.silkscreen-regular {
+	font-size: 2.5rem; /* approx 40px at 16px base */
+	line-height: 1.05;
+}
+
+.home h2.silkscreen-regular {
+	font-size: 1.25rem; /* approx 20px */
+	color: #444;
+	font-weight: 400;
+}
+
+.home h3.silkscreen-regular {
+	font-size: 0.95rem; /* approx 15px */
+	color: #666;
+	margin-top: 6px;
 }

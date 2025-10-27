@@ -1,9 +1,11 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, href } from 'react-router-dom';
 import './index.css';
-import App from './App.tsx';
 import Home from './pages/Home.tsx';
+import Join from './pages/Join';
+import Waitlist from './pages/Waitlist';
 import logo from '../images/simantic_logo_3.svg';
 import CardNav from './components/Navbar.tsx';
 
@@ -13,8 +15,8 @@ const items = [
     bgColor: "#0D0716",
     textColor: "#fff",
     links: [
-      { label: "About", href: "/company/about", ariaLabel: "About Simantic" },
-      { label: "Join", href: "/company/join", ariaLabel: "Join the team" }
+      { label: "About", href: "/about", ariaLabel: "About Simantic" },
+      { label: "Join", href: "/join", ariaLabel: "Join the team" }
     ]
   },
   {
@@ -22,8 +24,8 @@ const items = [
     bgColor: "#170D27",
     textColor: "#fff",
     links: [
-      { label: "Featured", href: "/projects/featured", ariaLabel: "Featured Projects" },
-      { label: "Case Studies", href: "/projects/case-studies", ariaLabel: "Project Case Studies" }
+      { label: "Featured", href: "/featured", ariaLabel: "Featured Projects" },
+      { label: "Case Studies", href: "/case-studies", ariaLabel: "Project Case Studies" }
     ]
   },
   {
@@ -51,7 +53,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path="/join" element={<App />} />
+  <Route path="/join" element={<Join />} />
+  <Route path="/waitlist" element={<Waitlist />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
