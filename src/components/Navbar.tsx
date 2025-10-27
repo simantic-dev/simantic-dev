@@ -1,7 +1,6 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
-// use your own icon import if react-icons is not available
 import { GoArrowUpRight } from 'react-icons/go';
 import './Navbar.css';
 
@@ -184,7 +183,7 @@ const CardNav: React.FC<CardNavProps> = ({
 
           <Link
             to="/start"
-            className="card-nav-cta-button"
+            className="card-nav-cta-button silkscreen-regular"
             style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
             aria-label="Get Started"
           >
@@ -200,7 +199,7 @@ const CardNav: React.FC<CardNavProps> = ({
               ref={setCardRef(idx)}
               style={{ backgroundColor: item.bgColor, color: item.textColor }}
             >
-              <div className="nav-card-label">{item.label}</div>
+              <div className="nav-card-label silkscreen-regular">{item.label}</div>
               <div className="nav-card-links">
                 {item.links?.map((lnk, i) => (
                   <a key={`${lnk.label}-${i}`} className="nav-card-link" href={lnk.href} aria-label={lnk.ariaLabel}>

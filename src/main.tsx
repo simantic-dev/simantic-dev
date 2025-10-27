@@ -9,12 +9,12 @@ import CardNav from './components/Navbar.tsx';
 
 const items = [
   {
-    label: "About",
+    label: "Company",
     bgColor: "#0D0716",
     textColor: "#fff",
     links: [
-      { label: "Company", href: "/about/company", ariaLabel: "About Company" },
-      { label: "Join", href: "/join", ariaLabel: "Join the team" }
+      { label: "About", href: "/company/about", ariaLabel: "About Simantic" },
+      { label: "Join", href: "/company/join", ariaLabel: "Join the team" }
     ]
   },
   {
