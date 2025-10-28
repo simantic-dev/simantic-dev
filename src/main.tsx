@@ -33,7 +33,8 @@ const items = [
     bgColor: "#271E37", 
     textColor: "#fff",
     links: [
-      { label: "LinkedIn", href: "https://www.linkedin.com/company/simantic", ariaLabel: "LinkedIn" }
+      { label: "LinkedIn", href: "https://www.linkedin.com/company/simantic", ariaLabel: "LinkedIn" },
+      { label: "Waitlist", href: "/waitlist", ariaLabel: "Join the waitlist" }
     ]
   }
 ];

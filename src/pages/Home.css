@@ -1,12 +1,18 @@
 /* Styles for the Home page */
 .home {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 16px;
-  text-align: center;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	align-items: center;
+	justify-content: center;
+	padding: 48px 16px;
+	text-align: center;
+	/* Keep the Home content vertically centered while respecting the
+		 fixed navbar. Use the same CSS var `--navbar-offset` that ensures
+		 other pages start below the nav; subtract it from 100vh so the
+		 remaining area is centered. This preserves the previous visual
+		 centering without relying on body-level centering. */
+	min-height: calc(100vh - var(--navbar-offset));
 }
 
 .join-waitlist-button {

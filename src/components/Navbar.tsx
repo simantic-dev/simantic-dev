@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { GoArrowUpRight } from 'react-icons/go';
@@ -139,6 +139,37 @@ const CardNav: React.FC<CardNavProps> = ({
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, [isExpanded]);
+
+  // Close the dropdown when clicking/tapping outside the navbar
+  useEffect(() => {
+    const handlePointerDown = (ev: PointerEvent) => {
+      const navEl = navRef.current;
+      if (!navEl) return;
+
+      const target = ev.target as Node | null;
+      if (!target) return;
+
+      // If the pointer event is outside the nav element, close the menu.
+      if (isExpanded && !navEl.contains(target)) {
+        // mirror the same close behavior as toggleMenu when closing:
+        setIsHamburgerOpen(false);
+        if (tlRef.current) {
+          try {
+            tlRef.current.eventCallback('onReverseComplete', () => setIsExpanded(false));
+            tlRef.current.reverse();
+          } catch (err) {
+            // fallback to immediate collapse
+            setIsExpanded(false);
+          }
+        } else {
+          setIsExpanded(false);
+        }
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => document.removeEventListener('pointerdown', handlePointerDown);
   }, [isExpanded]);
 
   const toggleMenu = () => {
