@@ -1,14 +1,12 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, href } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, href } from 'react-router-dom';
 import './index.css';
 import Home from './pages/Home.tsx';
 import Join from './pages/Join';
 import Waitlist from './pages/Waitlist';
-import About from './pages/About';
-import Featured from './pages/Featured';
-import CaseStudies from './pages/CaseStudies';
+import PitchDeck from './pages/PitchDeck';
 import logo from '../images/simantic_logo_3.svg';
 import CardNav from './components/Navbar.tsx';
 
@@ -62,6 +60,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/case-studies" element={<CaseStudies />} />
         <Route path="/join" element={<Join />} />
         <Route path="/waitlist" element={<Waitlist />} />
+        <Route path="/pitchdeck" element={<PitchDeck />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
