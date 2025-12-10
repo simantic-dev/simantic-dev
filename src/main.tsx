@@ -6,6 +6,7 @@ import './index.css';
 import Home from './pages/Home.tsx';
 import Join from './pages/Join';
 import Waitlist from './pages/Waitlist';
+import PitchDeck from './pages/PitchDeck';
 import logo from '../images/simantic_logo_3.svg';
 import CardNav from './components/Navbar.tsx';
 
@@ -56,7 +57,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path='/' element={<Home />} />
   <Route path="/join" element={<Join />} />
   <Route path="/waitlist" element={<Waitlist />} />
-  <Route path="/pitchdeck" element={<Navigate to="/images/Simantic_PitchDeck_V3.pdf" replace />} />
+  <Route path="/pitchdeck" element={<PitchDeck />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
