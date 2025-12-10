@@ -55,9 +55,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       />
       <Routes>
         <Route path='/' element={<Home />} />
-  <Route path="/join" element={<Join />} />
-  <Route path="/waitlist" element={<Waitlist />} />
-  <Route path="/pitchdeck" element={<PitchDeck />} />
+        <Route path="/join" element={<Join />} />
+        <Route path="/waitlist" element={<Waitlist />} />
+        <Route path="/pitchdeck" element={<PitchDeck />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
