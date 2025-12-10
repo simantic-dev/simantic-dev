@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, href } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, href } from 'react-router-dom';
 import './index.css';
 import Home from './pages/Home.tsx';
 import Join from './pages/Join';
@@ -56,6 +56,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path='/' element={<Home />} />
   <Route path="/join" element={<Join />} />
   <Route path="/waitlist" element={<Waitlist />} />
+  <Route path="/pitchdeck" element={<Navigate to="/images/Simantic_PitchDeck_V3.pdf" replace />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
