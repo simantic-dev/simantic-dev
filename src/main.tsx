@@ -4,14 +4,18 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate, href } from 'react-router-dom';
 import './index.css';
 import Home from './pages/Home.tsx';
-import About from './pages/About';
-import Featured from './pages/Featured';
-import CaseStudies from './pages/CaseStudies';
+import About from './pages/About.tsx';
+import Featured from './pages/Featured.tsx';
+import CaseStudies from './pages/CaseStudies.tsx';
 import Join from './pages/Join';
 import Waitlist from './pages/Waitlist';
 import PitchDeck from './pages/PitchDeck';
+import Login from './pages/Login';
+import Account from './pages/Account';
 import logo from '../images/simantic_logo_3.svg';
 import CardNav from './components/Navbar.tsx';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const items = [
   {
@@ -46,25 +50,33 @@ const items = [
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter basename="/">
-      <CardNav
-        logo={logo}
-        logoAlt="Company Logo"
-        items={items}
-        baseColor="#fff"
-        menuColor="#000"
-        buttonBgColor="#111"
-        buttonTextColor="#fff"
-        ease="power3.out"
-      />
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/featured" element={<Featured />} />
-        <Route path="/case-studies" element={<CaseStudies />} />
-        <Route path="/join" element={<Join />} />
-        <Route path="/waitlist" element={<Waitlist />} />
-        <Route path="/pitchdeck" element={<PitchDeck />} />
-      </Routes>
+      <AuthProvider>
+        <CardNav
+          logo={logo}
+          logoAlt="Company Logo"
+          items={items}
+          baseColor="#fff"
+          menuColor="#000"
+          buttonBgColor="#111"
+          buttonTextColor="#fff"
+          ease="power3.out"
+        />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/featured" element={<Featured />} />
+          <Route path="/case-studies" element={<CaseStudies />} />
+          <Route path="/join" element={<Join />} />
+          <Route path="/waitlist" element={<Waitlist />} />
+          <Route path="/pitchdeck" element={<PitchDeck />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/account" element={
+            <ProtectedRoute>
+              <Account />
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,
 )
