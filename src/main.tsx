@@ -8,58 +8,23 @@ import About from './pages/About.tsx';
 import Featured from './pages/Featured.tsx';
 import CaseStudies from './pages/CaseStudies.tsx';
 import Join from './pages/Join';
-import Waitlist from './pages/Waitlist';
 import PitchDeck from './pages/PitchDeck';
 import Login from './pages/Login';
 import Account from './pages/Account';
 import logo from '../images/simantic_logo_3.svg';
-import CardNav from './components/Navbar.tsx';
+import SimpleNavbar from './components/SimpleNavbar.tsx';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
-
-const items = [
-  {
-    label: "Company",
-    bgColor: "#0D0716",
-    textColor: "#fff",
-    links: [
-      { label: "About", href: "/about", ariaLabel: "About Simantic" },
-      { label: "Join", href: "/join", ariaLabel: "Join the team" }
-    ]
-  },
-  {
-    label: "Projects", 
-    bgColor: "#170D27",
-    textColor: "#fff",
-    links: [
-      { label: "Featured", href: "/featured", ariaLabel: "Featured Projects" },
-      { label: "Case Studies", href: "/case-studies", ariaLabel: "Project Case Studies" }
-    ]
-  },
-  {
-    label: "Contact",
-    bgColor: "#271E37", 
-    textColor: "#fff",
-    links: [
-      { label: "LinkedIn", href: "https://www.linkedin.com/company/simantic", ariaLabel: "LinkedIn" },
-      { label: "Waitlist", href: "/waitlist", ariaLabel: "Join the waitlist" }
-    ]
-  }
-];
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter basename="/">
       <AuthProvider>
-        <CardNav
+        <SimpleNavbar
           logo={logo}
           logoAlt="Company Logo"
-          items={items}
-          baseColor="#fff"
-          menuColor="#000"
           buttonBgColor="#111"
           buttonTextColor="#fff"
-          ease="power3.out"
         />
         <Routes>
           <Route path='/' element={<Home />} />
@@ -67,7 +32,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/featured" element={<Featured />} />
           <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/join" element={<Join />} />
-          <Route path="/waitlist" element={<Waitlist />} />
           <Route path="/pitchdeck" element={<PitchDeck />} />
           <Route path="/login" element={<Login />} />
           <Route path="/account" element={
