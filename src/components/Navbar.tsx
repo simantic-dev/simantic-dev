@@ -1,7 +1,8 @@
 import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { GoArrowUpRight } from 'react-icons/go';
+import { useAuth } from '../contexts/AuthContext';
 import './Navbar.css';
 
 type CardNavLink = {
@@ -42,9 +43,12 @@ const CardNav: React.FC<CardNavProps> = ({
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
   const navRef = useRef<HTMLDivElement | null>(null);
   const cardsRef = useRef<HTMLDivElement[]>([]);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const { currentUser, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const calculateHeight = () => {
     const navEl = navRef.current;
@@ -172,6 +176,21 @@ const CardNav: React.FC<CardNavProps> = ({
     return () => document.removeEventListener('pointerdown', handlePointerDown);
   }, [isExpanded]);
 
+  // Close account menu when clicking outside
+  useEffect(() => {
+    if (!showAccountMenu) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.account-menu-wrapper')) {
+        setShowAccountMenu(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showAccountMenu]);
+
   const toggleMenu = () => {
     const tl = tlRef.current;
     if (!tl) return;
@@ -191,36 +210,28 @@ const CardNav: React.FC<CardNavProps> = ({
   };
 
   return (
-    <div className={`card-nav-container ${className}`}>
-      <nav ref={navRef} className={`card-nav ${isExpanded ? 'open' : ''}`} style={{ backgroundColor: baseColor }}>
-        <div className="card-nav-top">
-          <div
-            className={`hamburger-menu ${isHamburgerOpen ? 'open' : ''}`}
-            onClick={toggleMenu}
-            role="button"
-            aria-label={isExpanded ? 'Close menu' : 'Open menu'}
-            tabIndex={0}
-            style={{ color: menuColor || '#000' }}
-          >
-            <div className="hamburger-line" />
-            <div className="hamburger-line" />
-          </div>
+    <>
+      <div className={`card-nav-container ${className}`}>
+        <nav ref={navRef} className={`card-nav ${isExpanded ? 'open' : ''}`} style={{ backgroundColor: baseColor }}>
+          <div className="card-nav-top">
+            <div
+              className={`hamburger-menu ${isHamburgerOpen ? 'open' : ''}`}
+              onClick={toggleMenu}
+              role="button"
+              aria-label={isExpanded ? 'Close menu' : 'Open menu'}
+              tabIndex={0}
+              style={{ color: menuColor || '#000' }}
+            >
+              <div className="hamburger-line" />
+              <div className="hamburger-line" />
+            </div>
 
-          <div className="logo-container">
-            <Link to="/" aria-label="Home">
-              <img src={logo} alt={logoAlt} className="logo" />
-            </Link>
+            <div className="logo-container">
+              <Link to="/" aria-label="Home">
+                <img src={logo} alt={logoAlt} className="logo" />
+              </Link>
+            </div>
           </div>
-
-          <Link
-            to="/start"
-            className="card-nav-cta-button silkscreen-regular"
-            style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
-            aria-label="Get Started"
-          >
-            Get Started
-          </Link>
-        </div>
 
         <div className="card-nav-content" aria-hidden={!isExpanded}>
           {(items || []).slice(0, 3).map((item, idx) => (
@@ -244,6 +255,66 @@ const CardNav: React.FC<CardNavProps> = ({
         </div>
       </nav>
     </div>
+
+    {/* Account button positioned separately in top right */}
+    <div className="account-button-container">
+      {currentUser ? (
+        <div className="account-menu-wrapper">
+          <button
+            className="card-nav-cta-button silkscreen-regular"
+            style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+            aria-label="Account Menu"
+            onClick={() => setShowAccountMenu(!showAccountMenu)}
+          >
+            Account
+          </button>
+          {showAccountMenu && (
+            <div className="account-dropdown">
+              <div className="account-dropdown-header">
+                {currentUser.photoURL && (
+                  <img src={currentUser.photoURL} alt="User avatar" className="account-avatar" />
+                )}
+                <div className="account-info">
+                  <div className="account-name">{currentUser.displayName || 'User'}</div>
+                  <div className="account-email">{currentUser.email}</div>
+                </div>
+              </div>
+              <div className="account-dropdown-links">
+                <button
+                  onClick={() => {
+                    setShowAccountMenu(false);
+                    navigate('/account');
+                  }}
+                  className="account-link"
+                >
+                  Account
+                </button>
+                <button
+                  onClick={async () => {
+                    setShowAccountMenu(false);
+                    await signOut();
+                    navigate('/');
+                  }}
+                  className="signout-link"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <Link
+          to="/login"
+          className="card-nav-cta-button silkscreen-regular"
+          style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+          aria-label="Login"
+        >
+          Login
+        </Link>
+      )}
+    </div>
+  </>
   );
 };
 

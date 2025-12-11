@@ -1,0 +1,133 @@
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0D0716 0%, #170D27 50%, #271E37 100%);
+  padding: 20px;
+}
+
+.dashboard-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-card h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  object-fit: cover;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-details h2 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.user-email {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.user-id {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  margin: 0;
+  font-family: monospace;
+}
+
+.dashboard-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.signout-button {
+  background: rgba(220, 53, 69, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.signout-button:hover {
+  background: rgba(220, 53, 69, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.2);
+}
+
+.signout-button:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .dashboard-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .user-info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .user-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .dashboard-card h1 {
+    font-size: 1.75rem;
+  }
+}
