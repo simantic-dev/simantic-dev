@@ -1,11 +1,12 @@
 /* Styles for the Home page */
 .home {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
 	align-items: center;
-	justify-content: center;
-	padding: 48px 16px;
+	justify-content: flex-start;
+	padding: 0;
 	text-align: center;
 	/* Keep the Home content vertically centered while respecting the
 		 fixed navbar. Use the same CSS var `--navbar-offset` that ensures
@@ -13,6 +14,26 @@
 		 remaining area is centered. This preserves the previous visual
 		 centering without relying on body-level centering. */
 	min-height: calc(100vh - var(--navbar-offset));
+}
+
+/* PCB background layer */
+.home .pcb-hover-container {
+	position: relative;
+	width: 100%;
+	height: auto;
+	z-index: 0;
+	margin-top: -24px;
+}
+
+/* Content layer on top of PCB */
+.home-content {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	align-items: center;
+	padding: 48px 16px 24px;
 }
 
 .join-waitlist-button {
@@ -41,16 +62,48 @@
 .home h1.silkscreen-regular {
 	font-size: 2.5rem; /* approx 40px at 16px base */
 	line-height: 1.05;
+	color: #ffffff;
 }
 
 .home h2.silkscreen-regular {
 	font-size: 1.25rem; /* approx 20px */
-	color: #444;
+	color: #ffffff;
 	font-weight: 400;
 }
 
 .home h3.silkscreen-regular {
 	font-size: 0.95rem; /* approx 15px */
-	color: #666;
+	color: #ffffff;
 	margin-top: 6px;
+}
+
+/* Section dividers */
+.home-divider {
+	width: 80%;
+	max-width: 1200px;
+	height: 1px;
+	background-color: #ffffff;
+	margin: 60px auto;
+}
+
+/* Home sections */
+.home-section {
+	width: 80%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 40px 20px;
+	text-align: center;
+	color: #ffffff;
+}
+
+.home-section h2 {
+	font-size: 2rem;
+	margin-bottom: 1rem;
+	color: #ffffff;
+}
+
+.home-section p {
+	font-size: 1.125rem;
+	line-height: 1.6;
+	color: #ffffff;
 }

@@ -1,6 +1,6 @@
 .account-container {
   min-height: calc(100vh - var(--navbar-offset));
-  background-color: #f5f5f5;
+  background-color: #000000;
   padding: 2rem 1rem;
   display: flex;
   justify-content: center;
@@ -14,7 +14,7 @@
 .account-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #111;
+  color: #ffffff;
   margin-bottom: 2rem;
 }
 
@@ -25,7 +25,7 @@
 .section-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111;
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 
