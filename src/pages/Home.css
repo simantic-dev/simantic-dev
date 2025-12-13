@@ -120,6 +120,65 @@
 	color: #ffffff;
 }
 
+/* Features Table */
+.features-table {
+	width: 100%;
+	max-width: 1100px;
+	margin: 30px auto;
+	border-collapse: collapse;
+}
+
+.features-table td {
+	padding: 30px 20px;
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	background: rgba(255, 255, 255, 0.05);
+	color: #ffffff;
+	font-size: 1rem;
+	transition: all 0.3s ease;
+}
+
+.features-table .title-row td {
+	font-weight: 700;
+	font-size: 1.25rem;
+	padding: 20px;
+	background: rgba(255, 255, 255, 0.08);
+	border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+.features-table .description-row td {
+	font-size: 0.95rem;
+	line-height: 1.6;
+	vertical-align: top;
+}
+
+.features-table td:hover {
+	background: rgba(255, 255, 255, 0.1);
+	transform: scale(1.02);
+}
+
+/* Responsive table for mobile */
+@media (max-width: 768px) {
+	.features-table {
+		max-width: 100%;
+		margin: 20px 0;
+	}
+
+	.features-table td {
+		padding: 15px 10px;
+		font-size: 0.85rem;
+	}
+
+	.features-table .title-row td {
+		font-size: 1rem;
+		padding: 12px 8px;
+	}
+
+	.features-table .description-row td {
+		font-size: 0.8rem;
+		line-height: 1.5;
+	}
+}
+
 /* Pricing Section */
 .pricing-section {
 	padding: 60px 20px;

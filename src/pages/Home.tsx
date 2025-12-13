@@ -66,19 +66,33 @@ export default function Home() {
       
       <div className="home-divider"></div>
       
-      <section id="features" className="home-section">
-        <h2 className="silkscreen-regular">Section 1</h2>
-        <p>Content for section 1 goes here.</p>
+      <section id="mission" className="home-section">
+        <h2 className="silkscreen-regular">Our mission</h2>
+        <p>We are building a platform to make the hardware design process cheaper, faster, and more reliable.</p>
+        <p>Simantic is a PCB simulation platform that enables engineers to test hardware designs without physical prototypes.</p>
       </section>
       
       <div className="home-divider"></div>
       
-      {/* <section id="" className="home-section">
-        <h2 className="silkscreen-regular">Section 2</h2>
-        <p>Content for section 2 goes here.</p>
+      <section id="features" className="home-section">
+        <h2 className="silkscreen-regular">Features</h2>
+        <table className="features-table">
+          <tbody>
+            <tr className="title-row">
+              <td>Firmware Emulation</td>
+              <td>CI/CD for PCB Designs</td>
+              <td>PCB SDK</td>
+            </tr>
+            <tr className="description-row">
+              <td>Description for feature 1 goes here</td>
+              <td>Description for feature 2 goes here</td>
+              <td>Description for feature 3 goes here</td>
+            </tr>
+          </tbody>
+        </table>
       </section>
       
-      <div className="home-divider"></div> */}
+      <div className="home-divider"></div>
       
       <section id="pricing" className="home-section pricing-section">
         <h2 className="silkscreen-regular">Pricing</h2>
