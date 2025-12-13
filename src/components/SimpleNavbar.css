@@ -50,7 +50,7 @@
 }
 
 .nav-link {
-  color: #111;
+  color: #111 !important;
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
@@ -58,8 +58,12 @@
   position: relative;
 }
 
+.nav-link:visited {
+  color: #111 !important;
+}
+
 .nav-link:hover {
-  color: #666;
+  color: #666 !important;
 }
 
 .nav-link::after {

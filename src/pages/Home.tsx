@@ -13,7 +13,7 @@ export default function Home() {
       
       <div className="home-divider"></div>
       
-      <section className="home-section">
+      <section id="features" className="home-section">
         <h2 className="silkscreen-regular">Section 1</h2>
         <p>Content for section 1 goes here.</p>
       </section>

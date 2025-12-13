@@ -41,12 +41,40 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
     <>
       <nav className={`simple-navbar ${className}`}>
         <div className="simple-navbar-content">
-          <Link to="/" className="navbar-logo" aria-label="Home">
+          <Link 
+            to="/" 
+            className="navbar-logo" 
+            aria-label="Home"
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          >
             <img src={logo} alt={logoAlt} />
           </Link>
 
           <div className="navbar-links-center">
-            <a href="/#pricing" className="nav-link">
+            <a 
+              href="/#features" 
+              className="nav-link"
+              onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  e.preventDefault();
+                  document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+            >
+              Features
+            </a>
+            <a 
+              href="/#pricing" 
+              className="nav-link"
+              onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  e.preventDefault();
+                  document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
+            >
               Pricing
             </a>
             <Link to="/join" className="nav-link">
