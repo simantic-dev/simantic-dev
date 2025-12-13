@@ -13,9 +13,9 @@ body {
   /* Ensure page content begins below the fixed navbar at first paint.
      JS may update --navbar-offset later if needed. */
   padding-top: var(--navbar-offset);
-  background-color: #f5f5f5;
+  background-color: #000000;
   font-family: sans-serif;
-  color: #111;
+  color: #ffffff;
 }
 
 .silkscreen-regular {
