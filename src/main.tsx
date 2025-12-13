@@ -11,6 +11,8 @@ import PitchDeck from './pages/PitchDeck';
 import Login from './pages/Login';
 import Account from './pages/Account';
 import Dashboard from './pages/Dashboard';
+import Invoice from './pages/Invoice';
+import EnterpriseContact from './pages/EnterpriseContact';
 import logo from '../images/simantic_logo_3.svg';
 import SimpleNavbar from './components/SimpleNavbar.tsx';
 import { AuthProvider } from './contexts/AuthContext';
@@ -43,6 +45,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Dashboard />
             </ProtectedRoute>
           } />
+          <Route path="/invoice" element={
+            <ProtectedRoute>
+              <Invoice />
+            </ProtectedRoute>
+          } />
+          <Route path="/enterprise-contact" element={<EnterpriseContact />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

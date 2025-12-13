@@ -1,4 +1,4 @@
-.join-container {
+.enterprise-contact-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   padding: 40px 20px;
 }
 
-.join-card {
+.enterprise-contact-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -29,7 +29,7 @@
   }
 }
 
-.join-card h1 {
+.enterprise-contact-card h1 {
   color: #fff;
   font-size: 2rem;
   font-weight: 700;
@@ -56,7 +56,7 @@
   line-height: 1.5;
 }
 
-.join-form {
+.contact-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -74,7 +74,9 @@
   font-weight: 600;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
@@ -84,79 +86,33 @@
   transition: all 0.3s ease;
 }
 
-.form-group input::placeholder {
+.form-group input::placeholder,
+.form-group textarea::placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(74, 222, 128, 0.5);
   box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
 }
 
-.file-input {
+.form-group select {
   cursor: pointer;
 }
 
-.file-input::file-selector-button {
-  background: rgba(74, 222, 128, 0.2);
-  color: #4ade80;
-  border: 1px solid rgba(74, 222, 128, 0.3);
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  margin-right: 1rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
+.form-group select option {
+  background: #1a1a1a;
+  color: #fff;
 }
 
-.file-input::file-selector-button:hover {
-  background: rgba(74, 222, 128, 0.3);
-}
-
-.file-help {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-}
-
-.upload-progress {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #4ade80, #22c55e);
-  border-radius: 4px;
-  transition: width 0.3s ease;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-.progress-text {
-  color: #4ade80;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-align: center;
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
 }
 
 .submit-button {
@@ -236,25 +192,27 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .join-container {
+  .enterprise-contact-container {
     padding: 20px;
   }
 
-  .join-card {
+  .enterprise-contact-card {
     padding: 2rem 1.5rem;
   }
 
-  .join-card h1 {
+  .enterprise-contact-card h1 {
     font-size: 1.75rem;
   }
 
-  .form-group input {
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
     font-size: 16px; /* Prevents zoom on mobile */
   }
 }
 
 @media (max-width: 480px) {
-  .join-card h1 {
+  .enterprise-contact-card h1 {
     font-size: 1.5rem;
   }
 

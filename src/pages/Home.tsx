@@ -1,9 +1,25 @@
 import './Home.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import PCBHoverEffect from '../components/PCBHoverEffect';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Home() {
+  const { currentUser } = useAuth();
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    if (currentUser) {
+      navigate('/invoice');
+    } else {
+      navigate('/login');
+    }
+  };
+
+  const handleContactUs = () => {
+    navigate('/enterprise-contact');
+  };
+
   useEffect(() => {
     // Handle hash navigation when component mounts
     const hash = window.location.hash;
@@ -77,7 +93,7 @@ export default function Home() {
               <li>Firmware emulation on 50+ MCUs and SoCs</li>
               <li>Basic code and simulated digital signal analysis</li>
             </ul>
-            <button className="pricing-button">Get Started</button>
+            <button className="pricing-button" onClick={handleGetStarted}>Get Started</button>
           </div>
           
           <div className="pricing-card featured">
@@ -90,7 +106,7 @@ export default function Home() {
               <li>Simulated analog signal analysis</li>
               <li>Dedicated customer support</li>
             </ul>
-            <button className="pricing-button">Get Started</button>
+            <button className="pricing-button" onClick={handleGetStarted}>Get Started</button>
           </div>
           
           <div className="pricing-card">
@@ -103,7 +119,7 @@ export default function Home() {
               <li>SAML / Enterprise SSO</li>
               <li>Priority Support</li>
             </ul>
-            <button className="pricing-button">Contact Us</button>
+            <button className="pricing-button" onClick={handleContactUs}>Contact Us</button>
           </div>
         </div>
       </section>
