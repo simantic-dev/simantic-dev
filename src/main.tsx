@@ -10,6 +10,7 @@ import Join from './pages/Join';
 import PitchDeck from './pages/PitchDeck';
 import Login from './pages/Login';
 import Account from './pages/Account';
+import Dashboard from './pages/Dashboard';
 import logo from '../images/simantic_logo_3.svg';
 import SimpleNavbar from './components/SimpleNavbar.tsx';
 import { AuthProvider } from './contexts/AuthContext';
@@ -35,6 +36,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/account" element={
             <ProtectedRoute>
               <Account />
+            </ProtectedRoute>
+          } />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
             </ProtectedRoute>
           } />
         </Routes>
