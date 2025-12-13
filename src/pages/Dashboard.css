@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0D0716 0%, #170D27 50%, #271E37 100%);
+  min-height: calc(100vh - var(--navbar-offset));
+  background-color: #000000;
   padding: 20px;
 }
 

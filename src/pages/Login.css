@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  min-height: calc(100vh - var(--navbar-offset));
+  background-color: #000000;
   padding: 20px;
 }
 

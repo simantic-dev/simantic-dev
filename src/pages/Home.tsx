@@ -1,8 +1,23 @@
 import './Home.css';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 import PCBHoverEffect from '../components/PCBHoverEffect';
 
 export default function Home() {
+  useEffect(() => {
+    // Handle hash navigation when component mounts
+    const hash = window.location.hash;
+    if (hash) {
+      // Small delay to ensure content is rendered
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, []);
+
   return (
     <main className='home'>
       <div className="home-content">
@@ -20,12 +35,12 @@ export default function Home() {
       
       <div className="home-divider"></div>
       
-      <section className="home-section">
+      {/* <section id="" className="home-section">
         <h2 className="silkscreen-regular">Section 2</h2>
         <p>Content for section 2 goes here.</p>
       </section>
       
-      <div className="home-divider"></div>
+      <div className="home-divider"></div> */}
       
       <section id="pricing" className="home-section pricing-section">
         <h2 className="silkscreen-regular">Pricing</h2>
@@ -38,7 +53,7 @@ export default function Home() {
               <li>Seamless GitHub integration</li>
               <li>Support for KiCad projects</li>
               <li>Firmware emulation on 50+ MCUs and SoCs</li>
-              <li>Basic code and digital signal analysis</li>
+              <li>Basic code and simulated digital signal analysis</li>
             </ul>
             <button className="pricing-button">Get Started</button>
           </div>
@@ -50,7 +65,7 @@ export default function Home() {
             <ul className="features">
               <li>Everything in Basic</li>
               <li>Support for Altium, Eagle, and other CAD software</li>
-              <li>In-depth analog signal analysis</li>
+              <li>Simulated analog signal analysis</li>
               <li>Dedicated customer support</li>
             </ul>
             <button className="pricing-button">Get Started</button>
