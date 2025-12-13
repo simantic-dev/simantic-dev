@@ -1,6 +1,5 @@
 .account-container {
   min-height: calc(100vh - var(--navbar-offset));
-  background-color: #000000;
   padding: 2rem 1rem;
   display: flex;
   justify-content: center;
@@ -221,5 +220,138 @@
 
   .detail-value.monospace {
     font-size: 0.75rem;
+  }
+}
+
+/* Message Boxes */
+.message-box {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.error-message {
+  background: rgba(220, 53, 69, 0.15);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  color: #ff6b6b;
+}
+
+.success-message {
+  background: rgba(40, 167, 69, 0.15);
+  border: 1px solid rgba(40, 167, 69, 0.3);
+  color: #28a745;
+}
+
+/* Providers List */
+.providers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.provider-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
+  transition: all 0.2s ease;
+}
+
+.provider-item:hover {
+  background: #f1f3f5;
+  border-color: #dee2e6;
+}
+
+.provider-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.provider-icon {
+  font-size: 2rem;
+}
+
+.google-icon {
+  color: #4285f4;
+}
+
+.github-icon {
+  color: #24292e;
+}
+
+.provider-info h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111;
+}
+
+.provider-status {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.link-button,
+.unlink-button {
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.link-button {
+  background: #007bff;
+  color: white;
+}
+
+.link-button:hover:not(:disabled) {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.unlink-button {
+  background: #dc3545;
+  color: white;
+}
+
+.unlink-button:hover:not(:disabled) {
+  background: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.link-button:disabled,
+.unlink-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.link-button:active:not(:disabled),
+.unlink-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Responsive for provider items */
+@media (max-width: 480px) {
+  .provider-item {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .link-button,
+  .unlink-button {
+    width: 100%;
   }
 }

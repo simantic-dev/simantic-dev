@@ -89,7 +89,7 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
           </div>
           
           <div className="navbar-links-right">
-            {currentUser && (
+            {currentUser ? (
               <div className="account-menu-wrapper">
                 <button
                   className="account-button"
@@ -134,6 +134,15 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
                   </div>
                 )}
               </div>
+            ) : (
+              <Link
+                to="/login"
+                className="account-button"
+                style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
+                aria-label="Login"
+              >
+                Login
+              </Link>
             )}
           </div>
         </div>

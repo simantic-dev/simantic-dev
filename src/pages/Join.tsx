@@ -2,6 +2,7 @@ import { useState } from "react";
 import { db, storage } from "../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import './Join.css';
 
 import {
 	Container,
@@ -92,7 +93,7 @@ export default function Join() {
 
 	return (
 		<Container className="my-4">
-			<Card className="mx-auto shadow-sm" style={{ maxWidth: 820 }}>
+			<Card className="mx-auto shadow-sm join-card-animated" style={{ maxWidth: 820 }}>
 				<Card.Body>
 					<Card.Title className="mb-3 silkscreen-thin">Join the Simantic Team</Card.Title>
 					<Form onSubmit={onSubmit} className="text-start">

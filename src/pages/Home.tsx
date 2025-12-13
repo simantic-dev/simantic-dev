@@ -16,6 +16,28 @@ export default function Home() {
         }
       }, 100);
     }
+
+    // Intersection Observer for section fade animations
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('section-visible');
+          } else {
+            entry.target.classList.remove('section-visible');
+          }
+        });
+      },
+      {
+        threshold: 0.2
+      }
+    );
+
+    // Observe sections and dividers
+    const sections = document.querySelectorAll('.home-section, .home-divider');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
   }, []);
 
   return (

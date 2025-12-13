@@ -3,7 +3,6 @@
   justify-content: center;
   align-items: center;
   min-height: calc(100vh - var(--navbar-offset));
-  background-color: #000000;
   padding: 20px;
 }
 
@@ -59,14 +58,19 @@
   line-height: 1.5;
 }
 
+.signin-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.google-signin-button,
 .github-signin-button {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  background: #24292e;
-  color: #fff;
   border: none;
   padding: 1rem 1.5rem;
   font-size: 1rem;
@@ -74,6 +78,24 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.google-signin-button {
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-signin-button:hover:not(:disabled) {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.github-signin-button {
+  background: #24292e;
+  color: #fff;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -83,16 +105,18 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
+.google-signin-button:active:not(:disabled),
 .github-signin-button:active:not(:disabled) {
   transform: translateY(0);
 }
 
+.google-signin-button:disabled,
 .github-signin-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.github-icon {
+.provider-icon {
   font-size: 1.5rem;
 }
 
