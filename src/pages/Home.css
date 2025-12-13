@@ -107,3 +107,131 @@
 	line-height: 1.6;
 	color: #ffffff;
 }
+
+/* Pricing Section */
+.pricing-section {
+	padding: 60px 20px;
+}
+
+.pricing-table {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 30px;
+	max-width: 1200px;
+	margin: 40px auto 0;
+}
+
+.pricing-card {
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 12px;
+	padding: 40px 30px;
+	text-align: center;
+	position: relative;
+	transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.pricing-card:hover {
+	transform: translateY(-5px);
+	border-color: rgba(255, 255, 255, 0.3);
+}
+
+.pricing-card.featured {
+	border-color: rgba(255, 255, 255, 0.4);
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.pricing-card h3 {
+	font-size: 1.75rem;
+	margin-bottom: 20px;
+	color: #ffffff;
+}
+
+.pricing-card .price {
+	font-size: 3rem;
+	font-weight: 700;
+	color: #ffffff;
+	margin-bottom: 30px;
+}
+
+.pricing-card .price span {
+	font-size: 1.25rem;
+	font-weight: 400;
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.pricing-description {
+	font-size: 1rem;
+	color: rgba(255, 255, 255, 0.7);
+	margin: -10px 0 20px 0;
+}
+
+.pricing-card .features {
+	list-style: none;
+	padding: 0;
+	margin: 30px 0;
+	text-align: left;
+}
+
+.pricing-card .features li {
+	padding: 12px 0 12px 30px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	color: rgba(255, 255, 255, 0.9);
+	position: relative;
+}
+
+.pricing-card .features li::before {
+	content: "✓";
+	position: absolute;
+	left: 0;
+	color: #4ade80;
+	font-weight: bold;
+	font-size: 1.2rem;
+}
+
+.pricing-card .features li:last-child {
+	border-bottom: none;
+}
+
+.pricing-button {
+	width: 100%;
+	padding: 15px 30px;
+	background: #ffffff;
+	color: #000000;
+	border: none;
+	border-radius: 8px;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.pricing-button:hover {
+	background: rgba(255, 255, 255, 0.9);
+	transform: scale(1.02);
+}
+
+/* Footer */
+.home-footer {
+	width: 100%;
+	padding: 40px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 60px;
+}
+
+.home-footer a {
+	display: inline-block;
+	transition: opacity 0.3s ease;
+}
+
+.home-footer a:hover {
+	opacity: 0.7;
+}
+
+.linkedin-logo {
+	width: 40px;
+	height: 40px;
+	filter: brightness(0) invert(1);
+}

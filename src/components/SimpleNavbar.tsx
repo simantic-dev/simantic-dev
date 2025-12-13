@@ -45,14 +45,16 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
             <img src={logo} alt={logoAlt} />
           </Link>
 
-          <div className="navbar-links">
-            <Link to="/featured" className="nav-link">
-              Features
-            </Link>
+          <div className="navbar-links-center">
+            <a href="/#pricing" className="nav-link">
+              Pricing
+            </a>
             <Link to="/join" className="nav-link">
               Join
             </Link>
-            
+          </div>
+          
+          <div className="navbar-links-right">
             {currentUser ? (
               <div className="account-menu-wrapper">
                 <button

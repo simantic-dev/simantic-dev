@@ -24,6 +24,58 @@ export default function Home() {
         <h2 className="silkscreen-regular">Section 2</h2>
         <p>Content for section 2 goes here.</p>
       </section>
+      
+      <div className="home-divider"></div>
+      
+      <section id="pricing" className="home-section pricing-section">
+        <h2 className="silkscreen-regular">Pricing</h2>
+        <div className="pricing-table">
+          <div className="pricing-card">
+            <h3>Basic</h3>
+            <div className="price">$0<span>/month</span></div>
+            <p className="pricing-description">Perfect for getting started</p>
+            <ul className="features">
+              <li>Seamless GitHub integration</li>
+              <li>Support for KiCad projects</li>
+              <li>Firmware emulation on 50+ MCUs and SoCs</li>
+              <li>Basic code and digital signal analysis</li>
+            </ul>
+            <button className="pricing-button">Get Started</button>
+          </div>
+          
+          <div className="pricing-card featured">
+            <h3>Pro</h3>
+            <div className="price">$10<span>/month</span></div>
+            <p className="pricing-description">Best for growing teams</p>
+            <ul className="features">
+              <li>Everything in Basic</li>
+              <li>Support for Altium, Eagle, and other CAD software</li>
+              <li>In-depth analog signal analysis</li>
+              <li>Dedicated customer support</li>
+            </ul>
+            <button className="pricing-button">Get Started</button>
+          </div>
+          
+          <div className="pricing-card">
+            <h3>Enterprise</h3>
+            <div className="price">Custom</div>
+            <p className="pricing-description">For large organizations</p>
+            <ul className="features">
+              <li>Everything in Pro</li>
+              <li>Custom integration into your organization's workflow</li>
+              <li>SAML / Enterprise SSO</li>
+              <li>Priority Support</li>
+            </ul>
+            <button className="pricing-button">Contact Us</button>
+          </div>
+        </div>
+      </section>
+      
+      <footer className="home-footer">
+        <a href="https://www.linkedin.com/company/simantic/" target="_blank" rel="noopener noreferrer" aria-label="Visit Simantic on LinkedIn">
+          <img src="/linkedin.svg" alt="LinkedIn" className="linkedin-logo" />
+        </a>
+      </footer>
     </main>
   )
 }
