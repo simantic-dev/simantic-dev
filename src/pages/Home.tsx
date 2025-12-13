@@ -76,20 +76,22 @@ export default function Home() {
       
       <section id="features" className="home-section">
         <h2 className="silkscreen-regular">Features</h2>
-        <table className="features-table">
-          <tbody>
-            <tr className="title-row">
-              <td>Firmware Emulation</td>
-              <td>CI/CD for PCB Designs</td>
-              <td>PCB SDK</td>
-            </tr>
-            <tr className="description-row">
-              <td>Description for feature 1 goes here</td>
-              <td>Description for feature 2 goes here</td>
-              <td>Description for feature 3 goes here</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="features-grid">
+          <div className="feature-card">
+            <h3>Firmware Emulation</h3>
+            <p>Description for feature 1 goes here</p>
+          </div>
+          
+          <div className="feature-card">
+            <h3>CI/CD for PCB Designs</h3>
+            <p>Description for feature 2 goes here</p>
+          </div>
+          
+          <div className="feature-card">
+            <h3>PCB SDK</h3>
+            <p>Description for feature 3 goes here</p>
+          </div>
+        </div>
       </section>
       
       <div className="home-divider"></div>
