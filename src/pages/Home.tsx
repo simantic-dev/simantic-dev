@@ -117,7 +117,7 @@ export default function Home() {
         <div className="features-grid">
           <div className="feature-card plus-jakarta-sans-regular">
             <h3>Test PCBs with Emulated Firmware and Simulated Electronics</h3>
-            <p>Run firmware source code in a virtual environment while simulating the physical behavior of your PCB. Catch bugs and validate designs before manufacturing, saving time and money on physical prototypes.</p>
+            <p>Run firmware source code on a virtual processor while simulating the physical behavior of your PCB. Catch bugs and validate designs before manufacturing, saving time and money on physical prototypes.</p>
           </div>
           
           <div className="feature-card plus-jakarta-sans-regular">
