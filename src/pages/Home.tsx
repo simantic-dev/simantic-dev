@@ -122,6 +122,120 @@ export default function Home() {
           
           <div className="feature-card plus-jakarta-sans-regular">
             <h3>Automated CI/CD Pipelines for Hardware Projects</h3>
+            <div className="ci-cd-demo">
+              <div className="terminal-window">
+                <div className="terminal-header">
+                  <div className="terminal-buttons">
+                    <span className="terminal-button close"></span>
+                    <span className="terminal-button minimize"></span>
+                    <span className="terminal-button maximize"></span>
+                  </div>
+                  <div className="terminal-title">Terminal</div>
+                </div>
+                <div className="terminal-body">
+                  <div className="terminal-line">
+                    <span className="terminal-prompt">$</span>
+                    <span className="terminal-command"> git add .</span>
+                  </div>
+                  <div className="terminal-line">
+                    <span className="terminal-prompt">$</span>
+                    <span className="terminal-command"> git commit -m "Update PCB layout"</span>
+                  </div>
+                  <div className="terminal-line terminal-output">[main 3f7a891] Update PCB layout</div>
+                  <div className="terminal-line terminal-output"> 2 files changed, 45 insertions(+)</div>
+                  <div className="terminal-line">
+                    <span className="terminal-prompt">$</span>
+                    <span className="terminal-command"> git push origin main</span>
+                  </div>
+                  <div className="terminal-line terminal-output">Enumerating objects: 5, done.</div>
+                  <div className="terminal-line terminal-output">Writing objects: 100% (3/3)</div>
+                  <div className="terminal-line terminal-output">To github.com:user/pcb-project.git</div>
+                  <div className="terminal-line terminal-output"> 3f7a891..7b2c4d5  main → main</div>
+                  <div className="terminal-cursor">_</div>
+                </div>
+              </div>
+              
+              <div className="github-actions-window">
+                <div className="terminal-header">
+                  <div className="terminal-buttons">
+                    <span className="terminal-button close"></span>
+                    <span className="terminal-button minimize"></span>
+                    <span className="terminal-button maximize"></span>
+                  </div>
+                  <div className="terminal-title">GitHub Actions</div>
+                </div>
+                <div className="github-body">
+                  <div className="github-workflow">
+                    <div className="workflow-header">
+                      <span className="workflow-name">Testing commit hash 3f7a891</span>
+                    </div>
+                    <div className="workflow-steps">
+                      <div className="workflow-step completed">
+                        <span className="step-icon">✓</span>
+                        <span className="step-name">Checkout code</span>
+                        <span className="step-time">2s</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">Detecting processor model</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">STM32F401 detected</span>
+                      </div>
+                      <div className="workflow-step completed">
+                        <span className="step-icon">✓</span>
+                        <span className="step-name">Static source code analysis</span>
+                        <span className="step-time">8s</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">Checking MISRA compliance</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon warning">⚠</span>
+                        <span className="substep-text">Unused variable 'sensorData' at line 42 of ./Core/src/imu.c</span>
+                      </div>
+                      <div className="workflow-step completed">
+                        <span className="step-icon">✓</span>
+                        <span className="step-name">Build firmware for STM32F401</span>
+                        <span className="step-time">15s</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -O2</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">Build complete: firmware.elf (42.3 KB)</span>
+                      </div>
+                      <div className="workflow-step completed">
+                        <span className="step-icon">✓</span>
+                        <span className="step-name">Firmware emulation</span>
+                        <span className="step-time">12s</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">Flashing firmware.elf to STM32F401</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">Checking UART inputs and outputs</span>
+                      </div>
+                      <div className="workflow-step completed">
+                        <span className="step-icon">✓</span>
+                        <span className="step-name">Signal integrity check</span>
+                        <span className="step-time">6s</span>
+                      </div>
+                      <div className="workflow-step success">
+                        <span className="step-icon">✓</span>
+                        <span className="step-name">All checks passed</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <p>Integrate hardware testing into your development workflow with automated regression testing on every commit. Detect issues early and maintain design quality throughout your project lifecycle.</p>
           </div>
           
