@@ -352,7 +352,10 @@
 .workflow-substep:nth-child(10) { animation-delay: 8.9s; }
 .workflow-substep:nth-child(11) { animation-delay: 9.2s; }
 .workflow-step:nth-child(12) { animation-delay: 10.0s; }
-.workflow-step:nth-child(13) { animation-delay: 10.6s; }
+.workflow-substep:nth-child(13) { animation-delay: 10.4s; }
+.workflow-substep:nth-child(14) { animation-delay: 10.7s; }
+.workflow-step:nth-child(15) { animation-delay: 11.5s; }
+.workflow-step:nth-child(16) { animation-delay: 12.1s; }
 
 .workflow-step.completed {
 	border-left-color: #238636;

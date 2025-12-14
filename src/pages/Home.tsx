@@ -49,8 +49,8 @@ export default function Home() {
       }
     );
 
-    // Observe sections and dividers
-    const sections = document.querySelectorAll('.home-section, .home-divider');
+    // Observe sections, dividers, and footer
+    const sections = document.querySelectorAll('.home-section, .home-divider, .home-footer');
     sections.forEach((section) => observer.observe(section));
 
     // Architecture carousel rotation
@@ -190,6 +190,19 @@ export default function Home() {
                       <div className="workflow-substep">
                         <span className="substep-icon warning">⚠</span>
                         <span className="substep-text">Unused variable 'sensorData' at line 42 of ./Core/src/imu.c</span>
+                      </div>
+                      <div className="workflow-step completed">
+                        <span className="step-icon">✓</span>
+                        <span className="step-name">Building PCB from KiCad project</span>
+                        <span className="step-time">8s</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">Generating netlist</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">Synthesizing circuit from netlist</span>
                       </div>
                       <div className="workflow-step completed">
                         <span className="step-icon">✓</span>
