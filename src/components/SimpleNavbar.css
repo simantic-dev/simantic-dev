@@ -57,7 +57,7 @@
   font-weight: 500;
   transition: color 0.2s ease;
   position: relative;
-  font-family: 'Silkscreen', monospace;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .nav-link:visited {
@@ -93,7 +93,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: 'Silkscreen', monospace;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .account-button:hover {
@@ -160,7 +160,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: 'Silkscreen', monospace;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .account-email {
@@ -190,7 +190,7 @@
   width: 100%;
   text-align: left;
   cursor: pointer;
-  font-family: 'Silkscreen', monospace;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .account-dropdown-links .account-link:hover,
