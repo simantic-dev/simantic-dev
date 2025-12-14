@@ -121,7 +121,7 @@ export default function Home() {
             <ul className="features plus-jakarta-sans-regular">
               <li>Everything in Basic</li>
               <li>Support for Altium, Eagle, and other CAD software</li>
-              <li>FPGA HDL emulation</li>
+              <li>FPGA logic emulation</li>
               <li>Signal integrity testing and analysis</li>
               <li>Dedicated customer support</li>
             </ul>
