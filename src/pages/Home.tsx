@@ -68,8 +68,10 @@ export default function Home() {
       
       <section id="mission" className="home-section">
         <h2 className="silkscreen-regular">Our mission</h2>
-        <p>We are building a platform to make the hardware design process cheaper, faster, and more reliable.</p>
-        <p>Simantic is a PCB simulation platform that enables engineers to test hardware designs without physical prototypes.</p>
+        <div className="plus-jakarta-sans-regular">
+          <p>At Simantic, our mission is to accelerate hardware development by providing engineers with a powerful simulation platform that lets you test and validate your designs without physical prototypes.</p>
+          <p>Simulate everything for you to know what your board does. Everything from the firmware running on the MCU, to the physics defining the electronics.</p>
+        </div>
       </section>
       
       <div className="home-divider"></div>
@@ -77,18 +79,18 @@ export default function Home() {
       <section id="features" className="home-section">
         <h2 className="silkscreen-regular">Features</h2>
         <div className="features-grid">
-          <div className="feature-card">
-            <h3>Firmware Emulation</h3>
+          <div className="feature-card plus-jakarta-sans-regular">
+            <h3>Test PCBs with Emulated Firmware and Simulated Electronics</h3>
             <p>Description for feature 1 goes here</p>
           </div>
           
-          <div className="feature-card">
-            <h3>CI/CD for PCB Designs</h3>
+          <div className="feature-card plus-jakarta-sans-regular">
+            <h3>Automated CI/CD Pipelines for Hardware Projects</h3>
             <p>Description for feature 2 goes here</p>
           </div>
           
-          <div className="feature-card">
-            <h3>PCB SDK</h3>
+          <div className="feature-card plus-jakarta-sans-regular">
+            <h3>Support for 100+ MCUs, SoCs, and FPGAs</h3>
             <p>Description for feature 3 goes here</p>
           </div>
         </div>
@@ -102,24 +104,25 @@ export default function Home() {
           <div className="pricing-card">
             <h3>Basic</h3>
             <div className="price">$0<span>/month</span></div>
-            <p className="pricing-description">Perfect for getting started</p>
-            <ul className="features">
+            <p className="pricing-description plus-jakarta-sans-regular">Best for hobbyists and getting started</p>
+            <ul className="features plus-jakarta-sans-regular">
               <li>Seamless GitHub integration</li>
               <li>Support for KiCad projects</li>
-              <li>Firmware emulation on 50+ MCUs and SoCs</li>
-              <li>Basic code and simulated digital signal analysis</li>
+              <li>Firmware emulation on 100+ MCUs and SoCs</li>
+              <li>Logic analyzers on simulated signals</li>
             </ul>
             <button className="pricing-button" onClick={handleGetStarted}>Get Started</button>
           </div>
           
           <div className="pricing-card featured">
             <h3>Pro</h3>
-            <div className="price">$10<span>/month</span></div>
-            <p className="pricing-description">Best for growing teams</p>
-            <ul className="features">
+            <div className="price">$30<span>/month</span></div>
+            <p className="pricing-description plus-jakarta-sans-regular">Best for professionals and growing teams</p>
+            <ul className="features plus-jakarta-sans-regular">
               <li>Everything in Basic</li>
               <li>Support for Altium, Eagle, and other CAD software</li>
-              <li>Simulated analog signal analysis</li>
+              <li>FPGA HDL emulation</li>
+              <li>Signal integrity testing and analysis</li>
               <li>Dedicated customer support</li>
             </ul>
             <button className="pricing-button" onClick={handleGetStarted}>Get Started</button>
@@ -128,8 +131,8 @@ export default function Home() {
           <div className="pricing-card">
             <h3>Enterprise</h3>
             <div className="price">Custom</div>
-            <p className="pricing-description">For large organizations</p>
-            <ul className="features">
+            <p className="pricing-description plus-jakarta-sans-regular">For large organizations</p>
+            <ul className="features plus-jakarta-sans-regular">
               <li>Everything in Pro</li>
               <li>Custom integration into your organization's workflow</li>
               <li>SAML / Enterprise SSO</li>

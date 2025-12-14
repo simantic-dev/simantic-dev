@@ -33,3 +33,10 @@ body {
   font-weight: 700;
   font-style: normal;
 }
+
+.plus-jakarta-sans-regular {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
