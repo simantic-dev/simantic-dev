@@ -117,12 +117,12 @@ export default function Home() {
         <div className="features-grid">
           <div className="feature-card plus-jakarta-sans-regular">
             <h3>Test PCBs with Emulated Firmware and Simulated Electronics</h3>
-            <p>Description for feature 1 goes here</p>
+            <p>Run firmware source code in a virtual environment while simulating the physical behavior of your PCB. Catch bugs and validate designs before manufacturing, saving time and money on physical prototypes.</p>
           </div>
           
           <div className="feature-card plus-jakarta-sans-regular">
             <h3>Automated CI/CD Pipelines for Hardware Projects</h3>
-            <p>Description for feature 2 goes here</p>
+            <p>Integrate hardware testing into your development workflow with automated regression testing on every commit. Detect issues early and maintain design quality throughout your project lifecycle.</p>
           </div>
           
           <div className="feature-card plus-jakarta-sans-regular">
@@ -140,6 +140,7 @@ export default function Home() {
                 <span className="architecture-item" data-index="8">Xtensa</span>
               </div>
             </div>
+            <p>Emulate a wide range of processor architectures and hardware platforms. From embedded microcontrollers to complex SoCs and FPGAs, test your designs across multiple target devices without needing physical hardware.</p>
           </div>
         </div>
       </section>
