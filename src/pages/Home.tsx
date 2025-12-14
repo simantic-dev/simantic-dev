@@ -151,7 +151,6 @@ export default function Home() {
                   <div className="terminal-line terminal-output">Writing objects: 100% (3/3)</div>
                   <div className="terminal-line terminal-output">To github.com:user/pcb-project.git</div>
                   <div className="terminal-line terminal-output"> 3f7a891..7b2c4d5  main → main</div>
-                  <div className="terminal-cursor">_</div>
                 </div>
               </div>
               
@@ -174,10 +173,6 @@ export default function Home() {
                         <span className="step-icon">✓</span>
                         <span className="step-name">Checkout code</span>
                         <span className="step-time">2s</span>
-                      </div>
-                      <div className="workflow-substep">
-                        <span className="substep-icon passed">✓</span>
-                        <span className="substep-text">Detecting processor model</span>
                       </div>
                       <div className="workflow-substep">
                         <span className="substep-icon passed">✓</span>
