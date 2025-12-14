@@ -53,7 +53,43 @@ export default function Home() {
     const sections = document.querySelectorAll('.home-section, .home-divider');
     sections.forEach((section) => observer.observe(section));
 
-    return () => observer.disconnect();
+    // Architecture carousel rotation
+    const architectureItems = document.querySelectorAll('.architecture-item');
+    const totalItems = architectureItems.length;
+    let currentIndex = 0;
+
+    const updateCarousel = () => {
+      architectureItems.forEach((item, index) => {
+        const position = (index - currentIndex + totalItems) % totalItems;
+        let dataPosition;
+        
+        if (position === 0) {
+          dataPosition = '0'; // center
+        } else if (position === 1) {
+          dataPosition = '1'; // right
+        } else if (position === totalItems - 1) {
+          dataPosition = '-1'; // left
+        } else {
+          dataPosition = '2'; // hidden
+        }
+        
+        item.setAttribute('data-position', dataPosition);
+      });
+    };
+
+    // Initial setup
+    updateCarousel();
+
+    // Auto-rotate every 2 seconds
+    const carouselInterval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % totalItems;
+      updateCarousel();
+    }, 2000);
+
+    return () => {
+      observer.disconnect();
+      clearInterval(carouselInterval);
+    };
   }, []);
 
   return (
@@ -91,7 +127,19 @@ export default function Home() {
           
           <div className="feature-card plus-jakarta-sans-regular">
             <h3>Support for 100+ MCUs, SoCs, and FPGAs</h3>
-            <p>Description for feature 3 goes here</p>
+            <div className="architecture-carousel">
+              <div className="architecture-track">
+                <span className="architecture-item" data-index="0">ARM Cortex-M</span>
+                <span className="architecture-item" data-index="1">ARM Cortex-A</span>
+                <span className="architecture-item" data-index="2">ARM Cortex-R</span>
+                <span className="architecture-item" data-index="3">RISC-V</span>
+                <span className="architecture-item" data-index="4">x86</span>
+                <span className="architecture-item" data-index="5">SPARC</span>
+                <span className="architecture-item" data-index="6">PowerPC</span>
+                <span className="architecture-item" data-index="7">MIPS</span>
+                <span className="architecture-item" data-index="8">Xtensa</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

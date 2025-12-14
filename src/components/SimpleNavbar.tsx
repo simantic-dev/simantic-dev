@@ -91,8 +91,8 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
             >
               Pricing
             </a>
-            <Link to="/join" className="nav-link" onClick={() => setShowMobileMenu(false)}>
-              Join
+            <Link to="/careers" className="nav-link" onClick={() => setShowMobileMenu(false)}>
+              Careers
             </Link>
             <Link 
               to={currentUser ? "/dashboard" : "/login"} 

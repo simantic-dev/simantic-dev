@@ -5,8 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate, href } from 'react-router-dom';
 import './index.css';
 import Home from './pages/Home.tsx';
 import About from './pages/About.tsx';
-import CaseStudies from './pages/CaseStudies.tsx';
-import Join from './pages/Join';
+import Careers from './pages/Careers';
 import PitchDeck from './pages/PitchDeck';
 import Login from './pages/Login';
 import Account from './pages/Account';
@@ -31,8 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/join" element={<Join />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="/pitchdeck" element={<PitchDeck />} />
           <Route path="/login" element={<Login />} />
           <Route path="/account" element={

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { db, storage } from "../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import './Join.css';
+import './Careers.css';
 
 type Status = "idle" | "uploading" | "saving" | "done" | "error";
 
-export default function Join() {
+export default function Careers() {
 	const [form, setForm] = useState({ name: "", email: "", location: "" });
 	const [file, setFile] = useState<File | null>(null);
 	const [progress, setProgress] = useState<number>(0);

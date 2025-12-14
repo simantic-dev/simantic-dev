@@ -159,6 +159,80 @@
 	margin: 0;
 }
 
+/* Architecture Carousel */
+.architecture-carousel {
+	margin-top: 20px;
+	position: relative;
+	width: 100%;
+	max-width: 600px;
+	height: 80px;
+	margin-left: auto;
+	margin-right: auto;
+	perspective: 1000px;
+}
+
+.architecture-track {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.architecture-item {
+	position: absolute;
+	padding: 12px 24px;
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 8px;
+	color: #ffffff;
+	font-size: 0.95rem;
+	font-weight: 500;
+	transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+	white-space: nowrap;
+	opacity: 0;
+	transform: scale(0.7) translateX(0);
+	pointer-events: none;
+	min-width: 160px;
+	text-align: center;
+}
+
+/* Center position - fully visible and larger */
+.architecture-item[data-position="0"] {
+	opacity: 1;
+	transform: scale(1.1) translateX(0);
+	z-index: 3;
+	background: rgba(255, 255, 255, 0.15);
+	pointer-events: auto;
+}
+
+/* Left position - smaller and faded */
+.architecture-item[data-position="-1"] {
+	opacity: 0.4;
+	transform: scale(0.85) translateX(-180px);
+	z-index: 2;
+}
+
+/* Right position - smaller and faded */
+.architecture-item[data-position="1"] {
+	opacity: 0.4;
+	transform: scale(0.85) translateX(180px);
+	z-index: 2;
+}
+
+/* Far left - hidden */
+.architecture-item[data-position="-2"],
+.architecture-item[data-position="2"] {
+	opacity: 0;
+	transform: scale(0.7) translateX(0);
+	z-index: 1;
+}
+
+.architecture-item:hover {
+	cursor: pointer;
+}
+
 /* Responsive features for mobile */
 @media (max-width: 768px) {
 	.features-grid {
@@ -178,6 +252,24 @@
 
 	.feature-card p {
 		font-size: 0.9rem;
+	}
+
+	.architecture-carousel {
+		max-width: 100%;
+		height: 70px;
+	}
+
+	.architecture-item {
+		font-size: 0.85rem;
+		padding: 8px 16px;
+	}
+
+	.architecture-item[data-position="-1"] {
+		transform: scale(0.75) translateX(-120px);
+	}
+
+	.architecture-item[data-position="1"] {
+		transform: scale(0.75) translateX(120px);
 	}
 }
 
