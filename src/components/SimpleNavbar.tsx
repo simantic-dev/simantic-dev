@@ -118,7 +118,12 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
                   <div className="account-dropdown">
                     <div className="account-dropdown-header">
                       {currentUser.photoURL && (
-                        <img src={currentUser.photoURL} alt="User avatar" className="account-avatar" />
+                        <img 
+                          src={currentUser.photoURL} 
+                          alt="User avatar" 
+                          className="account-avatar"
+                          referrerPolicy="no-referrer"
+                        />
                       )}
                       <div className="account-info">
                         <div className="account-name">{currentUser.displayName || 'User'}</div>
