@@ -5,12 +5,13 @@ import { BrowserRouter, Routes, Route, Navigate, href } from 'react-router-dom';
 import './index.css';
 import Home from './pages/Home.tsx';
 import About from './pages/About.tsx';
-import Featured from './pages/Featured.tsx';
-import CaseStudies from './pages/CaseStudies.tsx';
-import Join from './pages/Join';
+import Careers from './pages/Careers';
 import PitchDeck from './pages/PitchDeck';
 import Login from './pages/Login';
 import Account from './pages/Account';
+import Dashboard from './pages/Dashboard';
+import Invoice from './pages/Invoice';
+import EnterpriseContact from './pages/EnterpriseContact';
 import logo from '../images/simantic_logo_3.svg';
 import SimpleNavbar from './components/SimpleNavbar.tsx';
 import { AuthProvider } from './contexts/AuthContext';
@@ -29,9 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/featured" element={<Featured />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/join" element={<Join />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="/pitchdeck" element={<PitchDeck />} />
           <Route path="/login" element={<Login />} />
           <Route path="/account" element={
@@ -39,6 +38,17 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Account />
             </ProtectedRoute>
           } />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/invoice" element={
+            <ProtectedRoute>
+              <Invoice />
+            </ProtectedRoute>
+          } />
+          <Route path="/enterprise-contact" element={<EnterpriseContact />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

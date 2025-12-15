@@ -13,9 +13,9 @@ body {
   /* Ensure page content begins below the fixed navbar at first paint.
      JS may update --navbar-offset later if needed. */
   padding-top: var(--navbar-offset);
-  background-color: #f5f5f5;
+  background-color: #000000;
   font-family: sans-serif;
-  color: #111;
+  color: #ffffff;
 }
 
 .silkscreen-regular {
@@ -31,5 +31,12 @@ body {
 .silkscreen-bold {
   font-family: "Silkscreen", sans-serif;
   font-weight: 700;
+  font-style: normal;
+}
+
+.plus-jakarta-sans-regular {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
   font-style: normal;
 }

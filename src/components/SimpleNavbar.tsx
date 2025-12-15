@@ -19,6 +19,7 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
   buttonTextColor = '#fff'
 }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { currentUser, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -41,18 +42,68 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
     <>
       <nav className={`simple-navbar ${className}`}>
         <div className="simple-navbar-content">
-          <Link to="/" className="navbar-logo" aria-label="Home">
+          <Link 
+            to="/" 
+            className="navbar-logo" 
+            aria-label="Home"
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          >
             <img src={logo} alt={logoAlt} />
           </Link>
 
-          <div className="navbar-links">
-            <Link to="/featured" className="nav-link">
+          {/* Hamburger Menu Button */}
+          <button 
+            className="hamburger-menu"
+            onClick={() => setShowMobileMenu(!showMobileMenu)}
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <div className={`navbar-links-center ${showMobileMenu ? 'mobile-open' : ''}`}>
+            <a 
+              href="/#features" 
+              className="nav-link"
+              onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  e.preventDefault();
+                  document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                }
+                setShowMobileMenu(false);
+              }}
+            >
               Features
+            </a>
+            <a 
+              href="/#pricing" 
+              className="nav-link"
+              onClick={(e) => {
+                if (window.location.pathname === '/') {
+                  e.preventDefault();
+                  document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+                }
+                setShowMobileMenu(false);
+              }}
+            >
+              Pricing
+            </a>
+            <Link to="/careers" className="nav-link" onClick={() => setShowMobileMenu(false)}>
+              Careers
             </Link>
-            <Link to="/join" className="nav-link">
-              Join
+            <Link 
+              to={currentUser ? "/dashboard" : "/login"} 
+              className="nav-link"
+              onClick={() => setShowMobileMenu(false)}
+            >
+              Dashboard
             </Link>
-            
+          </div>
+          
+          <div className={`navbar-links-right ${showMobileMenu ? 'mobile-open' : ''}`}>
             {currentUser ? (
               <div className="account-menu-wrapper">
                 <button
@@ -67,7 +118,12 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
                   <div className="account-dropdown">
                     <div className="account-dropdown-header">
                       {currentUser.photoURL && (
-                        <img src={currentUser.photoURL} alt="User avatar" className="account-avatar" />
+                        <img 
+                          src={currentUser.photoURL} 
+                          alt="User avatar" 
+                          className="account-avatar"
+                          referrerPolicy="no-referrer"
+                        />
                       )}
                       <div className="account-info">
                         <div className="account-name">{currentUser.displayName || 'User'}</div>
