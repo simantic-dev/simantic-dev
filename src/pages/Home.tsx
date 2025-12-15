@@ -292,7 +292,7 @@ export default function Home() {
           <div className="pricing-card featured">
             <h3>Pro</h3>
             <div className="price">$30<span>/month</span></div>
-            <p className="pricing-description plus-jakarta-sans-regular">Best for professionals and growing teams</p>
+            <p className="pricing-description plus-jakarta-sans-regular">Best for professionals and teams</p>
             <ul className="features plus-jakarta-sans-regular">
               <li>Everything in Basic</li>
               <li>Support for Altium, Eagle, and other CAD software</li>
