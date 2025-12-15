@@ -219,12 +219,16 @@ export default function Home() {
                       </div>
                       <div className="workflow-step completed">
                         <span className="step-icon">✓</span>
-                        <span className="step-name">Firmware emulation</span>
+                        <span className="step-name">Hardware emulation</span>
                         <span className="step-time">12s</span>
                       </div>
                       <div className="workflow-substep">
                         <span className="substep-icon passed">✓</span>
-                        <span className="substep-text">Flashing firmware.elf to STM32F401</span>
+                        <span className="substep-text">Starting simulation: Setting Vin=3.3V</span>
+                      </div>
+                      <div className="workflow-substep">
+                        <span className="substep-icon passed">✓</span>
+                        <span className="substep-text">Loading firmware.elf to STM32F401</span>
                       </div>
                       <div className="workflow-substep">
                         <span className="substep-icon passed">✓</span>
@@ -275,7 +279,7 @@ export default function Home() {
           <div className="pricing-card">
             <h3>Basic</h3>
             <div className="price">$0<span>/month</span></div>
-            <p className="pricing-description plus-jakarta-sans-regular">Best for hobbyists and getting started</p>
+            <p className="pricing-description plus-jakarta-sans-regular">Best for individuals getting started</p>
             <ul className="features plus-jakarta-sans-regular">
               <li>Seamless GitHub integration</li>
               <li>Support for KiCad projects</li>

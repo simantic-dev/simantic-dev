@@ -354,8 +354,9 @@
 .workflow-step:nth-child(12) { animation-delay: 10.0s; }
 .workflow-substep:nth-child(13) { animation-delay: 10.4s; }
 .workflow-substep:nth-child(14) { animation-delay: 10.7s; }
-.workflow-step:nth-child(15) { animation-delay: 11.5s; }
-.workflow-step:nth-child(16) { animation-delay: 12.1s; }
+.workflow-substep:nth-child(15) { animation-delay: 11.0s; }
+.workflow-step:nth-child(16) { animation-delay: 11.8s; }
+.workflow-step:nth-child(17) { animation-delay: 12.4s; }
 
 .workflow-step.completed {
 	border-left-color: #238636;
