@@ -10,6 +10,14 @@
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 0.5px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.simple-navbar.scrolled {
+  top: 0.5em;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .simple-navbar-content {
@@ -20,6 +28,12 @@
   height: 60px;
   box-sizing: border-box;
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.simple-navbar.scrolled .simple-navbar-content {
+  height: 50px;
+  padding: 0.5rem 1.25rem;
 }
 
 .navbar-logo {
@@ -32,6 +46,11 @@
   height: 40px;
   width: auto;
   border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.simple-navbar.scrolled .navbar-logo img {
+  height: 32px;
 }
 
 .navbar-links-center {
@@ -41,6 +60,11 @@
   display: flex;
   gap: 2rem;
   align-items: center;
+  transition: gap 0.3s ease;
+}
+
+.simple-navbar.scrolled .navbar-links-center {
+  gap: 1.5rem;
 }
 
 .navbar-links-right {
@@ -48,6 +72,11 @@
   gap: 2rem;
   align-items: center;
   margin-left: auto;
+  transition: gap 0.3s ease;
+}
+
+.simple-navbar.scrolled .navbar-links-right {
+  gap: 1.5rem;
 }
 
 .nav-link {
@@ -55,9 +84,13 @@
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
-  transition: color 0.2s ease;
+  transition: all 0.3s ease;
   position: relative;
   font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.simple-navbar.scrolled .nav-link {
+  font-size: 0.9rem;
 }
 
 .nav-link:visited {
@@ -91,9 +124,14 @@
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.simple-navbar.scrolled .account-button {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.85rem;
 }
 
 .account-button:hover {

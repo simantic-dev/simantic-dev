@@ -20,8 +20,23 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
 }) => {
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { currentUser, signOut } = useAuth();
   const navigate = useNavigate();
+
+  // Handle scroll for navbar transparency
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Close account menu when clicking outside
   useEffect(() => {
@@ -40,7 +55,7 @@ const SimpleNavbar: React.FC<SimpleNavbarProps> = ({
 
   return (
     <>
-      <nav className={`simple-navbar ${className}`}>
+      <nav className={`simple-navbar ${className} ${isScrolled ? 'scrolled' : ''}`}>
         <div className="simple-navbar-content">
           <Link 
             to="/" 
