@@ -50,7 +50,7 @@ interface TestRun {
 const Dashboard: React.FC = () => {
   const { currentUser, signOut } = useAuth();
   const navigate = useNavigate();
-  const { owner, repo } = useParams<{ owner: string; repo: string }>();
+  const { owner, repo, '*': filePath } = useParams<{ owner: string; repo: string; '*': string }>();
   const { isAccepted, loading } = useWaitlistStatus(currentUser?.uid);
   
   const [githubToken, setGithubToken] = useState<string | null>(null);
@@ -98,7 +98,7 @@ const Dashboard: React.FC = () => {
     if (owner && repo && githubToken && !selectedRepo) {
       const fullName = `${owner}/${repo}`;
       const repoData: GitHubRepo = {
-        id: 0, // Will be filled when we fetch repo details
+        id: 0,
         name: repo,
         full_name: fullName,
         description: '',
@@ -110,11 +110,19 @@ const Dashboard: React.FC = () => {
       setBranches([]);
       setSelectedBranch('');
       setHasSimanticFile(false);
-      fetchRepoContents(repoData);
+      
+      // Load the path from URL
+      if (filePath) {
+        // Check if it's a file by trying to fetch it
+        fetchFileContent(repoData, filePath);
+        fetchRepoContents(repoData, filePath.split('/').slice(0, -1).join('/'));
+      } else {
+        fetchRepoContents(repoData);
+      }
+      
       fetchBranches(repoData);
       checkForSimanticFile(repoData);
     } else if (!owner && !repo && selectedRepo) {
-      // Clear selected repo when navigating back to dashboard
       setSelectedRepo(null);
       setRepoContents([]);
       setCurrentPath('');
@@ -423,8 +431,10 @@ const Dashboard: React.FC = () => {
     
     if (item.type === 'dir') {
       fetchRepoContents(selectedRepo, item.path);
+      navigate(`/dashboard/${selectedRepo.full_name}/${item.path}`);
     } else {
       fetchFileContent(selectedRepo, item.path);
+      navigate(`/dashboard/${selectedRepo.full_name}/${item.path}`);
     }
   };
 
@@ -439,6 +449,11 @@ const Dashboard: React.FC = () => {
     pathParts.pop();
     const newPath = pathParts.join('/');
     fetchRepoContents(selectedRepo, newPath);
+    if (newPath) {
+      navigate(`/dashboard/${selectedRepo.full_name}/${newPath}`);
+    } else {
+      navigate(`/dashboard/${selectedRepo.full_name}`);
+    }
   };
 
   if (loading) {
@@ -639,7 +654,7 @@ const Dashboard: React.FC = () => {
                 <div className="repo-browser-container">
                   <div className="browser-header">
                     <button onClick={handleBackToRepos} className="back-button">
-                      ← Back to Repos
+                      Back to Repos
                     </button>
                     <h3>{selectedRepo.name}</h3>
                     {branches.length > 0 && (
@@ -659,14 +674,49 @@ const Dashboard: React.FC = () => {
                   
                   <div className="repo-browser-split">
                     <div className="repo-browser-left">
-                      {currentPath && (
-                        <div className="breadcrumb">
-                          <button onClick={handleNavigateUp} className="up-button">
-                            ↑ Up
+                      <div className="breadcrumb">
+                        {currentPath || fileContent ? (
+                          <button 
+                            onClick={() => {
+                              setFileContent(null);
+                              fetchRepoContents(selectedRepo);
+                              navigate(`/dashboard/${selectedRepo.full_name}`);
+                            }} 
+                            className="breadcrumb-item"
+                          >
+                            {selectedRepo.name}
                           </button>
-                          <span className="current-path">/{currentPath}</span>
-                        </div>
-                      )}
+                        ) : (
+                          <span className="breadcrumb-current">{selectedRepo.name}</span>
+                        )}
+                        {currentPath && currentPath.split('/').filter(p => p).map((part, index, array) => {
+                          const pathUpToHere = array.slice(0, index + 1).join('/');
+                          const isLast = index === array.length - 1;
+                          // If viewing a file, the last item is the file name and should not be clickable
+                          // But when viewing a directory, the last item should also not be clickable (it's current)
+                          const shouldBeClickable = fileContent ? true : !isLast;
+                          
+                          return (
+                            <span key={pathUpToHere} className="breadcrumb-segment">
+                              <span className="breadcrumb-separator">/</span>
+                              {shouldBeClickable ? (
+                                <button
+                                  onClick={() => {
+                                    setFileContent(null);
+                                    fetchRepoContents(selectedRepo, pathUpToHere);
+                                    navigate(`/dashboard/${selectedRepo.full_name}/${pathUpToHere}`);
+                                  }}
+                                  className="breadcrumb-item"
+                                >
+                                  {part}
+                                </button>
+                              ) : (
+                                <span className="breadcrumb-current">{part}</span>
+                              )}
+                            </span>
+                          );
+                        })}
+                      </div>
                       
                       {loadingContents ? (
                         <div className="loading">Loading contents...</div>
@@ -676,7 +726,15 @@ const Dashboard: React.FC = () => {
                         </div>
                       ) : (
                         <div className="contents-list">
-                          {repoContents.map((item, idx) => (
+                          {[...repoContents]
+                            .sort((a, b) => {
+                              // Directories first, then files
+                              if (a.type === 'dir' && b.type !== 'dir') return -1;
+                              if (a.type !== 'dir' && b.type === 'dir') return 1;
+                              // Alphabetically within each group
+                              return a.name.localeCompare(b.name);
+                            })
+                            .map((item, idx) => (
                             <div 
                               key={idx} 
                               className={`content-item ${item.type}`}
