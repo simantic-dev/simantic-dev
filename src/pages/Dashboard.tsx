@@ -55,8 +55,7 @@ const Dashboard: React.FC = () => {
   
   const [githubToken, setGithubToken] = useState<string | null>(null);
   const [githubUsername, setGithubUsername] = useState<string | null>(null);
-  const [configuredRepos, setConfiguredRepos] = useState<GitHubRepo[]>([]);
-  const [otherRepos, setOtherRepos] = useState<GitHubRepo[]>([]);
+  const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [pinnedRepoIds, setPinnedRepoIds] = useState<number[]>([]);
   const [selectedRepo, setSelectedRepo] = useState<GitHubRepo | null>(null);
   const [repoContents, setRepoContents] = useState<RepoFile[]>([]);
@@ -144,58 +143,26 @@ const Dashboard: React.FC = () => {
   };
 
   const fetchRepos = async () => {
-    if (!githubToken || !githubUsername) return;
+    if (!githubToken) return;
     
     setLoadingRepos(true);
     try {
-      // Fetch all repos
-      const allReposResponse = await fetch(
+      const response = await fetch(
         'https://api.github.com/user/repos?sort=updated&per_page=100',
         { headers: { 'Authorization': `Bearer ${githubToken}` } }
       );
-      const allRepos = await allReposResponse.json();
+      const allRepos = await response.json();
       
-      // Use GitHub search API to find repos with .simantic file
-      const searchQuery = `filename:.simantic user:${githubUsername}`;
-      const searchResponse = await fetch(
-        `https://api.github.com/search/code?q=${encodeURIComponent(searchQuery)}&per_page=100`,
-        { headers: { 'Authorization': `Bearer ${githubToken}` } }
-      );
-      const searchData = await searchResponse.json();
+      const repoList = allRepos.map((repo: any) => ({
+        id: repo.id,
+        name: repo.name,
+        full_name: repo.full_name,
+        description: repo.description,
+        html_url: repo.html_url,
+        private: repo.private
+      }));
       
-      // Extract unique repository IDs with .simantic
-      const configuredRepoIds = new Set<number>();
-      if (searchData.items) {
-        searchData.items.forEach((item: any) => {
-          if (item.repository) {
-            configuredRepoIds.add(item.repository.id);
-          }
-        });
-      }
-      
-      // Separate repos into configured and other
-      const configured: GitHubRepo[] = [];
-      const other: GitHubRepo[] = [];
-      
-      allRepos.forEach((repo: any) => {
-        const repoData = {
-          id: repo.id,
-          name: repo.name,
-          full_name: repo.full_name,
-          description: repo.description,
-          html_url: repo.html_url,
-          private: repo.private
-        };
-        
-        if (configuredRepoIds.has(repo.id)) {
-          configured.push(repoData);
-        } else {
-          other.push(repoData);
-        }
-      });
-      
-      setConfiguredRepos(configured);
-      setOtherRepos(other);
+      setRepos(repoList);
     } catch (error) {
       console.error('Error fetching repos:', error);
     } finally {
@@ -205,7 +172,7 @@ const Dashboard: React.FC = () => {
 
   // Auto-fetch repos when GitHub token is available
   useEffect(() => {
-    if (githubToken && configuredRepos.length === 0 && otherRepos.length === 0 && !loadingRepos) {
+    if (githubToken && repos.length === 0 && !loadingRepos) {
       fetchRepos();
     }
   }, [githubToken]);
@@ -572,16 +539,12 @@ const Dashboard: React.FC = () => {
                         </div>
                       )}
                       
-                      {/* Configured Repositories Section */}
-                      <div className="configured-repos-section">
-                        <h3 className="section-title">⚙️ Configured Repositories ({configuredRepos.length})</h3>
-                        <p className="section-description">
-                          Repositories with a <code>.simantic</code> file. Newly created or configured repos can take time to appear here. 
-                          You can pin any repo to override this check.
-                        </p>
-                        {configuredRepos.length > 0 ? (
+                      {/* All Repositories */}
+                      <div className="repos-section">
+                        <h3 className="section-title">📁 Repositories ({repos.length})</h3>
+                        {repos.length > 0 ? (
                           <div className="repos-grid">
-                            {configuredRepos.map(repo => (
+                            {repos.map(repo => (
                               <div 
                                 key={repo.id} 
                                 className={`repo-card ${pinnedRepoIds.includes(repo.id) ? 'is-pinned' : ''}`}
@@ -609,44 +572,9 @@ const Dashboard: React.FC = () => {
                             ))}
                           </div>
                         ) : (
-                          <p className="empty-state">No configured repositories yet.</p>
+                          <p className="empty-state">No repositories found.</p>
                         )}
                       </div>
-                      
-                      {/* Other Repositories Section */}
-                      {otherRepos.length > 0 && (
-                        <div className="other-repos-section">
-                          <h3 className="section-title">📁 Other Repositories ({otherRepos.length})</h3>
-                          <div className="repos-grid">
-                            {otherRepos.map(repo => (
-                              <div 
-                                key={repo.id} 
-                                className={`repo-card ${pinnedRepoIds.includes(repo.id) ? 'is-pinned' : ''}`}
-                              >
-                                <div className="repo-card-content" onClick={() => handleRepoSelect(repo)}>
-                                  <h3>{repo.name}</h3>
-                                  {repo.description && (
-                                    <p className="repo-description">{repo.description}</p>
-                                  )}
-                                  <div className="repo-meta">
-                                    {repo.private && <span className="private-badge">Private</span>}
-                                  </div>
-                                </div>
-                                <button 
-                                  className={`pin-button ${pinnedRepoIds.includes(repo.id) ? 'pinned' : ''}`}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    togglePinRepo(repo.id);
-                                  }}
-                                  title={pinnedRepoIds.includes(repo.id) ? 'Unpin repository' : 'Pin repository'}
-                                >
-                                  {pinnedRepoIds.includes(repo.id) ? '×' : '+'}
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
                     </>
                   )}
                 </div>
