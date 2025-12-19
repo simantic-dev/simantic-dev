@@ -9,12 +9,9 @@
 .dashboard-card {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 3rem 2.5rem;
-  max-width: 600px;
+  min-height: calc(100vh - var(--navbar-offset));
   width: 100%;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0;
   animation: fadeIn 0.5s ease-in;
 }
 
@@ -29,12 +26,20 @@
   }
 }
 
-.dashboard-card h1 {
+.dashboard-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-header-bar h1 {
   color: #fff;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: 2rem;
-  text-align: center;
+  margin: 0;
   letter-spacing: -0.5px;
 }
 
@@ -92,10 +97,10 @@
   background: rgba(220, 53, 69, 0.2);
   color: #ff6b6b;
   border: 1px solid rgba(220, 53, 69, 0.3);
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
+  padding: 0.625rem 1.5rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -114,6 +119,12 @@
 .waitlist-card {
   max-width: 500px;
   text-align: center;
+  margin: 0 auto;
+  padding: 3rem 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - var(--navbar-offset));
 }
 
 .waitlist-content {
@@ -121,6 +132,7 @@
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+  width: 100%;
 }
 
 .waitlist-content h1 {
@@ -145,11 +157,8 @@
 
 /* Dashboard content section */
 .dashboard-content {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 3rem;
+  min-height: calc(100vh - var(--navbar-offset) - 100px);
 }
 
 .dashboard-content h2 {
@@ -161,6 +170,255 @@
 .dashboard-content p {
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.6;
+}
+
+/* GitHub Integration Styles */
+.github-section {
+  width: 100%;
+}
+
+.github-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.github-username {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.github-button,
+.fetch-button {
+  background: linear-gradient(135deg, #24292e, #0366d6);
+  color: #fff;
+  border: none;
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 1rem auto;
+}
+
+.github-button:hover,
+.fetch-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(3, 102, 214, 0.4);
+}
+
+.github-button:disabled,
+.fetch-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.repos-count {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.repos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.repo-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.repo-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(3, 102, 214, 0.5);
+  transform: translateY(-2px);
+}
+
+.repo-card h3 {
+  color: #fff;
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.repo-description {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.repo-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.private-badge {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.repo-browser {
+  width: 100%;
+}
+
+.browser-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.browser-header h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.back-button,
+.up-button {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.back-button:hover,
+.up-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.current-path {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.contents-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.content-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.content-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(3, 102, 214, 0.5);
+}
+
+.content-item.dir {
+  font-weight: 600;
+}
+
+.item-icon {
+  font-size: 1.2rem;
+}
+
+.item-name {
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.file-viewer {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  max-height: 500px;
+  overflow: auto;
+}
+
+.file-viewer pre {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Scrollbar styling */
+.repos-grid::-webkit-scrollbar,
+.contents-list::-webkit-scrollbar,
+.file-viewer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.repos-grid::-webkit-scrollbar-track,
+.contents-list::-webkit-scrollbar-track,
+.file-viewer::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.repos-grid::-webkit-scrollbar-thumb,
+.contents-list::-webkit-scrollbar-thumb,
+.file-viewer::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.repos-grid::-webkit-scrollbar-thumb:hover,
+.contents-list::-webkit-scrollbar-thumb:hover,
+.file-viewer::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Responsive design */

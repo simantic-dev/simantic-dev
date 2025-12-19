@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate, href } from 'react-router-dom';
@@ -16,6 +16,11 @@ import logo from '../images/simantic_logo_3.svg';
 import SimpleNavbar from './components/SimpleNavbar.tsx';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+
+// Lazy load protected routes
+const Account = React.lazy(() => import('./pages/Account'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const Invoice = React.lazy(() => import('./pages/Invoice'));
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
