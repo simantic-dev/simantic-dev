@@ -238,14 +238,27 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   padding: 1rem;
-  cursor: pointer;
+  position: relative;
   transition: all 0.3s ease;
+}
+
+.repo-card-content {
+  cursor: pointer;
 }
 
 .repo-card:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(3, 102, 214, 0.5);
   transform: translateY(-2px);
+}
+
+.repo-card.pinned {
+  border-color: rgba(255, 193, 7, 0.5);
+  background: rgba(255, 193, 7, 0.05);
+}
+
+.repo-card.is-pinned {
+  opacity: 0.7;
 }
 
 .repo-card h3 {
@@ -279,6 +292,43 @@
   border-radius: 5px;
   font-size: 0.75rem;
   font-weight: 600;
+}
+
+.pin-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.pin-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.pin-button.pinned {
+  background: rgba(255, 193, 7, 0.2);
+  border-color: rgba(255, 193, 7, 0.4);
+}
+
+.pinned-section,
+.all-repos-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-left: 0.25rem;
 }
 
 .repo-browser {

@@ -30,6 +30,7 @@ const Dashboard: React.FC = () => {
   const [githubToken, setGithubToken] = useState<string | null>(null);
   const [githubUsername, setGithubUsername] = useState<string | null>(null);
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [pinnedRepoIds, setPinnedRepoIds] = useState<number[]>([]);
   const [selectedRepo, setSelectedRepo] = useState<GitHubRepo | null>(null);
   const [repoContents, setRepoContents] = useState<RepoFile[]>([]);
   const [currentPath, setCurrentPath] = useState<string>('');
@@ -37,9 +38,9 @@ const Dashboard: React.FC = () => {
   const [loadingRepos, setLoadingRepos] = useState(false);
   const [loadingContents, setLoadingContents] = useState(false);
 
-  // Load GitHub token from Firestore
+  // Load GitHub token and pinned repos from Firestore
   useEffect(() => {
-    const loadGitHubToken = async () => {
+    const loadGitHubData = async () => {
       if (!currentUser?.uid) return;
       
       try {
@@ -48,13 +49,14 @@ const Dashboard: React.FC = () => {
           const data = userDoc.data();
           setGithubToken(data.githubToken || null);
           setGithubUsername(data.githubUsername || null);
+          setPinnedRepoIds(data.pinnedRepoIds || []);
         }
       } catch (error) {
-        console.error('Error loading GitHub token:', error);
+        console.error('Error loading GitHub data:', error);
       }
     };
     
-    loadGitHubToken();
+    loadGitHubData();
   }, [currentUser]);
 
   const handleSignOut = async () => {
@@ -63,6 +65,48 @@ const Dashboard: React.FC = () => {
       navigate('/login');
     } catch (error) {
       console.error('Error signing out:', error);
+    }
+  };
+
+  const fetchRepos = async () => {
+    if (!githubToken) return;
+    
+    setLoadingRepos(true);
+    try {
+      const response = await fetch('https://api.github.com/user/repos?sort=updated&per_page=100', {
+        headers: { 'Authorization': `Bearer ${githubToken}` }
+      });
+      const data = await response.json();
+      setRepos(data);
+    } catch (error) {
+      console.error('Error fetching repos:', error);
+    } finally {
+      setLoadingRepos(false);
+    }
+  };
+
+  // Auto-fetch repos when GitHub token is available
+  useEffect(() => {
+    if (githubToken && repos.length === 0 && !loadingRepos) {
+      fetchRepos();
+    }
+  }, [githubToken]);
+
+  const togglePinRepo = async (repoId: number) => {
+    if (!currentUser?.uid) return;
+    
+    const newPinnedIds = pinnedRepoIds.includes(repoId)
+      ? pinnedRepoIds.filter(id => id !== repoId)
+      : [...pinnedRepoIds, repoId];
+    
+    try {
+      await setDoc(doc(db, 'users', currentUser.uid), {
+        pinnedRepoIds: newPinnedIds
+      }, { merge: true });
+      
+      setPinnedRepoIds(newPinnedIds);
+    } catch (error) {
+      console.error('Error updating pinned repos:', error);
     }
   };
 
@@ -142,23 +186,6 @@ const Dashboard: React.FC = () => {
       window.history.replaceState({}, '', '/dashboard');
     }
   }, []);
-
-  const fetchRepos = async () => {
-    if (!githubToken) return;
-    
-    setLoadingRepos(true);
-    try {
-      const response = await fetch('https://api.github.com/user/repos?sort=updated&per_page=100', {
-        headers: { 'Authorization': `Bearer ${githubToken}` }
-      });
-      const data = await response.json();
-      setRepos(data);
-    } catch (error) {
-      console.error('Error fetching repos:', error);
-    } finally {
-      setLoadingRepos(false);
-    }
-  };
 
   const fetchRepoContents = async (repo: GitHubRepo, path: string = '') => {
     if (!githubToken) return;
@@ -299,33 +326,78 @@ const Dashboard: React.FC = () => {
               
               {!selectedRepo ? (
                 <div className="repos-list">
-                  {repos.length === 0 ? (
-                    <button 
-                      onClick={fetchRepos} 
-                      className="fetch-button"
-                      disabled={loadingRepos}
-                    >
-                      {loadingRepos ? 'Loading...' : 'Load Repositories'}
-                    </button>
+                  {loadingRepos ? (
+                    <div className="loading">Loading repositories...</div>
+                  ) : repos.length === 0 ? (
+                    <div className="loading">No repositories found</div>
                   ) : (
                     <>
-                      <div className="repos-count">{repos.length} repositories</div>
-                      <div className="repos-grid">
-                        {repos.map(repo => (
-                          <div 
-                            key={repo.id} 
-                            className="repo-card"
-                            onClick={() => handleRepoSelect(repo)}
-                          >
-                            <h3>{repo.name}</h3>
-                            {repo.description && (
-                              <p className="repo-description">{repo.description}</p>
-                            )}
-                            <div className="repo-meta">
-                              {repo.private && <span className="private-badge">Private</span>}
-                            </div>
+                      {pinnedRepoIds.length > 0 && (
+                        <div className="pinned-section">
+                          <h3 className="section-title">📌 Pinned Repositories</h3>
+                          <div className="repos-grid">
+                            {repos
+                              .filter(repo => pinnedRepoIds.includes(repo.id))
+                              .map(repo => (
+                                <div 
+                                  key={repo.id} 
+                                  className="repo-card pinned"
+                                >
+                                  <div className="repo-card-content" onClick={() => handleRepoSelect(repo)}>
+                                    <h3>{repo.name}</h3>
+                                    {repo.description && (
+                                      <p className="repo-description">{repo.description}</p>
+                                    )}
+                                    <div className="repo-meta">
+                                      {repo.private && <span className="private-badge">Private</span>}
+                                    </div>
+                                  </div>
+                                  <button 
+                                    className="pin-button pinned"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      togglePinRepo(repo.id);
+                                    }}
+                                    title="Unpin repository"
+                                  >
+                                    📌
+                                  </button>
+                                </div>
+                              ))}
                           </div>
-                        ))}
+                        </div>
+                      )}
+                      
+                      <div className="all-repos-section">
+                        <h3 className="section-title">All Repositories ({repos.length})</h3>
+                        <div className="repos-grid">
+                          {repos.map(repo => (
+                            <div 
+                              key={repo.id} 
+                              className={`repo-card ${pinnedRepoIds.includes(repo.id) ? 'is-pinned' : ''}`}
+                            >
+                              <div className="repo-card-content" onClick={() => handleRepoSelect(repo)}>
+                                <h3>{repo.name}</h3>
+                                {repo.description && (
+                                  <p className="repo-description">{repo.description}</p>
+                                )}
+                                <div className="repo-meta">
+                                  {repo.private && <span className="private-badge">Private</span>}
+                                </div>
+                              </div>
+                              <button 
+                                className={`pin-button ${pinnedRepoIds.includes(repo.id) ? 'pinned' : ''}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  togglePinRepo(repo.id);
+                                }}
+                                title={pinnedRepoIds.includes(repo.id) ? 'Unpin repository' : 'Pin repository'}
+                              >
+                                {pinnedRepoIds.includes(repo.id) ? '📌' : '📍'}
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </>
                   )}
