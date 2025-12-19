@@ -498,7 +498,7 @@ const Dashboard: React.FC = () => {
                 <div className="repos-list">
                   {loadingRepos ? (
                     <div className="loading">Loading repositories...</div>
-                  ) : configuredRepos.length === 0 && otherRepos.length === 0 ? (
+                  ) : repos.length === 0 ? (
                     <div className="loading">No repositories found</div>
                   ) : (
                     <>
@@ -507,7 +507,7 @@ const Dashboard: React.FC = () => {
                         <div className="pinned-section">
                           <h3 className="section-title">📌 Pinned Repositories</h3>
                           <div className="repos-grid">
-                            {[...configuredRepos, ...otherRepos]
+                            {repos
                               .filter(repo => pinnedRepoIds.includes(repo.id))
                               .map(repo => (
                                 <div 
