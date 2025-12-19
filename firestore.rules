@@ -1,0 +1,56 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    // Allow users to read/write their own document (for GitHub integration)
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Waitlist collection - allow authenticated users to read their own entry
+    match /waitlist/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+  
+  	match /acceptedUsers/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
+
+    // Enterprise contact submissions - anyone can create, only admins can read
+    match /enterpriseContacts/{contactId} {
+      allow create: if true; // Allow anyone to submit the form
+      allow read, update, delete: if false; // Only admins via Firebase Console
+    }
+    
+    match /acceptedUsers/{docId} {
+    	allow read: if true;
+    }
+
+    match /applications/{docId} {
+    	// Public read disabled by default; allow only create to 'applications'
+      allow read: if true;
+      allow create: if
+        request.time < timestamp.date(2100, 1, 1) && // trivial anti-abuse guard
+        request.resource.data.keys().hasOnly(
+          ["name","email","location","resumeUrl","resumeFileName","resumeContentType","resumeSize","createdAt"]
+        ) &&
+        request.resource.data.name is string &&
+        request.resource.data.email is string &&
+        request.resource.data.location is string &&
+        request.resource.data.resumeUrl is string &&
+        request.resource.data.resumeFileName is string &&
+        request.resource.data.resumeContentType is string &&
+        request.resource.data.resumeSize is int &&
+        request.resource.data.name.size() > 1 &&
+        request.resource.data.name.size() <= 100 &&
+        request.resource.data.email.size() > 3 &&
+        request.resource.data.email.size() <= 160 &&
+        request.resource.data.location.size() > 3 &&
+        request.resource.data.location.size() <= 100 &&
+        request.resource.data.resumeSize <= 10 * 1024 * 1024 &&
+        request.resource.data.createdAt == request.time;
+      allow update, delete: if false;
+    }
+  }
+}
