@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useWaitlistStatus } from '../hooks/useWaitlistStatus';
 import { db } from '../firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -22,21 +22,55 @@ interface RepoFile {
   size?: number;
 }
 
+interface CommitInfo {
+  sha: string;
+  message: string;
+  author: string;
+  date: string;
+  html_url: string;
+}
+
+interface Branch {
+  name: string;
+  commit: {
+    sha: string;
+  };
+}
+
+interface TestRun {
+  id: string;
+  commitSha: string;
+  commitMessage: string;
+  status: 'running' | 'passed' | 'failed';
+  timestamp: string;
+  duration?: number;
+  logs?: string;
+}
+
 const Dashboard: React.FC = () => {
   const { currentUser, signOut } = useAuth();
   const navigate = useNavigate();
+  const { owner, repo } = useParams<{ owner: string; repo: string }>();
   const { isAccepted, loading } = useWaitlistStatus(currentUser?.uid);
   
   const [githubToken, setGithubToken] = useState<string | null>(null);
   const [githubUsername, setGithubUsername] = useState<string | null>(null);
-  const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [configuredRepos, setConfiguredRepos] = useState<GitHubRepo[]>([]);
+  const [otherRepos, setOtherRepos] = useState<GitHubRepo[]>([]);
   const [pinnedRepoIds, setPinnedRepoIds] = useState<number[]>([]);
   const [selectedRepo, setSelectedRepo] = useState<GitHubRepo | null>(null);
   const [repoContents, setRepoContents] = useState<RepoFile[]>([]);
   const [currentPath, setCurrentPath] = useState<string>('');
   const [fileContent, setFileContent] = useState<string | null>(null);
+  const [branches, setBranches] = useState<Branch[]>([]);
+  const [selectedBranch, setSelectedBranch] = useState<string>('');
+  const [defaultBranch, setDefaultBranch] = useState<string>('');
+  const [commitHistory, setCommitHistory] = useState<CommitInfo[]>([]);
+  const [testHistory, setTestHistory] = useState<TestRun[]>([]);
+  const [hasSimanticFile, setHasSimanticFile] = useState(false);
   const [loadingRepos, setLoadingRepos] = useState(false);
   const [loadingContents, setLoadingContents] = useState(false);
+  const [loadingCommits, setLoadingCommits] = useState(false);
 
   // Load GitHub token and pinned repos from Firestore
   useEffect(() => {
@@ -59,6 +93,39 @@ const Dashboard: React.FC = () => {
     loadGitHubData();
   }, [currentUser]);
 
+  // Load repo from URL params if present
+  useEffect(() => {
+    if (owner && repo && githubToken && !selectedRepo) {
+      const fullName = `${owner}/${repo}`;
+      const repoData: GitHubRepo = {
+        id: 0, // Will be filled when we fetch repo details
+        name: repo,
+        full_name: fullName,
+        description: '',
+        html_url: `https://github.com/${fullName}`,
+        private: false
+      };
+      setSelectedRepo(repoData);
+      setCommitHistory([]);
+      setBranches([]);
+      setSelectedBranch('');
+      setHasSimanticFile(false);
+      fetchRepoContents(repoData);
+      fetchBranches(repoData);
+      checkForSimanticFile(repoData);
+    } else if (!owner && !repo && selectedRepo) {
+      // Clear selected repo when navigating back to dashboard
+      setSelectedRepo(null);
+      setRepoContents([]);
+      setCurrentPath('');
+      setFileContent(null);
+      setCommitHistory([]);
+      setBranches([]);
+      setSelectedBranch('');
+      setHasSimanticFile(false);
+    }
+  }, [owner, repo, githubToken]);
+
   const handleSignOut = async () => {
     try {
       await signOut();
@@ -69,15 +136,58 @@ const Dashboard: React.FC = () => {
   };
 
   const fetchRepos = async () => {
-    if (!githubToken) return;
+    if (!githubToken || !githubUsername) return;
     
     setLoadingRepos(true);
     try {
-      const response = await fetch('https://api.github.com/user/repos?sort=updated&per_page=100', {
-        headers: { 'Authorization': `Bearer ${githubToken}` }
+      // Fetch all repos
+      const allReposResponse = await fetch(
+        'https://api.github.com/user/repos?sort=updated&per_page=100',
+        { headers: { 'Authorization': `Bearer ${githubToken}` } }
+      );
+      const allRepos = await allReposResponse.json();
+      
+      // Use GitHub search API to find repos with .simantic file
+      const searchQuery = `filename:.simantic user:${githubUsername}`;
+      const searchResponse = await fetch(
+        `https://api.github.com/search/code?q=${encodeURIComponent(searchQuery)}&per_page=100`,
+        { headers: { 'Authorization': `Bearer ${githubToken}` } }
+      );
+      const searchData = await searchResponse.json();
+      
+      // Extract unique repository IDs with .simantic
+      const configuredRepoIds = new Set<number>();
+      if (searchData.items) {
+        searchData.items.forEach((item: any) => {
+          if (item.repository) {
+            configuredRepoIds.add(item.repository.id);
+          }
+        });
+      }
+      
+      // Separate repos into configured and other
+      const configured: GitHubRepo[] = [];
+      const other: GitHubRepo[] = [];
+      
+      allRepos.forEach((repo: any) => {
+        const repoData = {
+          id: repo.id,
+          name: repo.name,
+          full_name: repo.full_name,
+          description: repo.description,
+          html_url: repo.html_url,
+          private: repo.private
+        };
+        
+        if (configuredRepoIds.has(repo.id)) {
+          configured.push(repoData);
+        } else {
+          other.push(repoData);
+        }
       });
-      const data = await response.json();
-      setRepos(data);
+      
+      setConfiguredRepos(configured);
+      setOtherRepos(other);
     } catch (error) {
       console.error('Error fetching repos:', error);
     } finally {
@@ -87,7 +197,7 @@ const Dashboard: React.FC = () => {
 
   // Auto-fetch repos when GitHub token is available
   useEffect(() => {
-    if (githubToken && repos.length === 0 && !loadingRepos) {
+    if (githubToken && configuredRepos.length === 0 && otherRepos.length === 0 && !loadingRepos) {
       fetchRepos();
     }
   }, [githubToken]);
@@ -226,9 +336,86 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const fetchBranches = async (repo: GitHubRepo) => {
+    if (!githubToken) return;
+    
+    try {
+      // Get repo details to find default branch
+      const repoResponse = await fetch(
+        `https://api.github.com/repos/${repo.full_name}`,
+        { headers: { 'Authorization': `Bearer ${githubToken}` } }
+      );
+      const repoData = await repoResponse.json();
+      const defaultBranchName = repoData.default_branch || 'main';
+      setDefaultBranch(defaultBranchName);
+      setSelectedBranch(defaultBranchName);
+      
+      // Fetch all branches
+      const branchesResponse = await fetch(
+        `https://api.github.com/repos/${repo.full_name}/branches`,
+        { headers: { 'Authorization': `Bearer ${githubToken}` } }
+      );
+      const branchesData = await branchesResponse.json();
+      setBranches(branchesData);
+      
+      // Fetch commits for default branch
+      fetchCommitHistory(repo, defaultBranchName);
+    } catch (error) {
+      console.error('Error fetching branches:', error);
+    }
+  };
+
+  const fetchCommitHistory = async (repo: GitHubRepo, branch: string) => {
+    if (!githubToken) return;
+    
+    setLoadingCommits(true);
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${repo.full_name}/commits?sha=${branch}&per_page=50`,
+        { headers: { 'Authorization': `Bearer ${githubToken}` } }
+      );
+      const data = await response.json();
+      
+      if (Array.isArray(data)) {
+        const commits = data.map((commit: any) => ({
+          sha: commit.sha,
+          message: commit.commit.message,
+          author: commit.commit.author.name,
+          date: new Date(commit.commit.author.date).toLocaleString(),
+          html_url: commit.html_url
+        }));
+        setCommitHistory(commits);
+      }
+    } catch (error) {
+      console.error('Error fetching commit history:', error);
+    } finally {
+      setLoadingCommits(false);
+    }
+  };
+
+  const checkForSimanticFile = async (repo: GitHubRepo) => {
+    if (!githubToken) return;
+    
+    try {
+      const response = await fetch(
+        `https://api.github.com/repos/${repo.full_name}/contents/.simantic`,
+        { headers: { 'Authorization': `Bearer ${githubToken}` } }
+      );
+      setHasSimanticFile(response.ok);
+    } catch (error) {
+      setHasSimanticFile(false);
+    }
+  };
+
   const handleRepoSelect = (repo: GitHubRepo) => {
-    setSelectedRepo(repo);
-    fetchRepoContents(repo);
+    // Navigate to repo-specific page
+    navigate(`/dashboard/${repo.full_name}`);
+  };
+
+  const handleBranchChange = (branch: string) => {
+    if (!selectedRepo) return;
+    setSelectedBranch(branch);
+    fetchCommitHistory(selectedRepo, branch);
   };
 
   const handleItemClick = (item: RepoFile) => {
@@ -242,10 +429,7 @@ const Dashboard: React.FC = () => {
   };
 
   const handleBackToRepos = () => {
-    setSelectedRepo(null);
-    setRepoContents([]);
-    setCurrentPath('');
-    setFileContent(null);
+    navigate('/dashboard');
   };
 
   const handleNavigateUp = () => {
@@ -303,9 +487,11 @@ const Dashboard: React.FC = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-card">
-        <div className="dashboard-header-bar">
-          <h1>Dashboard</h1>
-        </div>
+        {!selectedRepo && (
+          <div className="dashboard-header-bar">
+            <h1>Dashboard</h1>
+          </div>
+        )}
 
         {/* GitHub Integration */}
         <div className="dashboard-content">
@@ -319,24 +505,27 @@ const Dashboard: React.FC = () => {
             </div>
           ) : (
             <div className="github-section">
-              <div className="github-header">
-                <h2>📦 GitHub Repositories</h2>
-                <p className="github-username">@{githubUsername}</p>
-              </div>
+              {!selectedRepo && (
+                <div className="github-header">
+                  <h2>📦 GitHub Repositories</h2>
+                  <p className="github-username">@{githubUsername}</p>
+                </div>
+              )}
               
               {!selectedRepo ? (
                 <div className="repos-list">
                   {loadingRepos ? (
                     <div className="loading">Loading repositories...</div>
-                  ) : repos.length === 0 ? (
+                  ) : configuredRepos.length === 0 && otherRepos.length === 0 ? (
                     <div className="loading">No repositories found</div>
                   ) : (
                     <>
+                      {/* Pinned Section */}
                       {pinnedRepoIds.length > 0 && (
                         <div className="pinned-section">
                           <h3 className="section-title">📌 Pinned Repositories</h3>
                           <div className="repos-grid">
-                            {repos
+                            {[...configuredRepos, ...otherRepos]
                               .filter(repo => pinnedRepoIds.includes(repo.id))
                               .map(repo => (
                                 <div 
@@ -360,7 +549,7 @@ const Dashboard: React.FC = () => {
                                     }}
                                     title="Unpin repository"
                                   >
-                                    📌
+                                    ×
                                   </button>
                                 </div>
                               ))}
@@ -368,96 +557,215 @@ const Dashboard: React.FC = () => {
                         </div>
                       )}
                       
-                      <div className="all-repos-section">
-                        <h3 className="section-title">All Repositories ({repos.length})</h3>
-                        <div className="repos-grid">
-                          {repos.map(repo => (
-                            <div 
-                              key={repo.id} 
-                              className={`repo-card ${pinnedRepoIds.includes(repo.id) ? 'is-pinned' : ''}`}
-                            >
-                              <div className="repo-card-content" onClick={() => handleRepoSelect(repo)}>
-                                <h3>{repo.name}</h3>
-                                {repo.description && (
-                                  <p className="repo-description">{repo.description}</p>
-                                )}
-                                <div className="repo-meta">
-                                  {repo.private && <span className="private-badge">Private</span>}
-                                </div>
-                              </div>
-                              <button 
-                                className={`pin-button ${pinnedRepoIds.includes(repo.id) ? 'pinned' : ''}`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  togglePinRepo(repo.id);
-                                }}
-                                title={pinnedRepoIds.includes(repo.id) ? 'Unpin repository' : 'Pin repository'}
+                      {/* Configured Repositories Section */}
+                      <div className="configured-repos-section">
+                        <h3 className="section-title">⚙️ Configured Repositories ({configuredRepos.length})</h3>
+                        <p className="section-description">
+                          Repositories with a <code>.simantic</code> file. Newly created or configured repos can take time to appear here. 
+                          You can pin any repo to override this check.
+                        </p>
+                        {configuredRepos.length > 0 ? (
+                          <div className="repos-grid">
+                            {configuredRepos.map(repo => (
+                              <div 
+                                key={repo.id} 
+                                className={`repo-card ${pinnedRepoIds.includes(repo.id) ? 'is-pinned' : ''}`}
                               >
-                                {pinnedRepoIds.includes(repo.id) ? '📌' : '📍'}
-                              </button>
-                            </div>
-                          ))}
-                        </div>
+                                <div className="repo-card-content" onClick={() => handleRepoSelect(repo)}>
+                                  <h3>{repo.name}</h3>
+                                  {repo.description && (
+                                    <p className="repo-description">{repo.description}</p>
+                                  )}
+                                  <div className="repo-meta">
+                                    {repo.private && <span className="private-badge">Private</span>}
+                                  </div>
+                                </div>
+                                <button 
+                                  className={`pin-button ${pinnedRepoIds.includes(repo.id) ? 'pinned' : ''}`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    togglePinRepo(repo.id);
+                                  }}
+                                  title={pinnedRepoIds.includes(repo.id) ? 'Unpin repository' : 'Pin repository'}
+                                >
+                                  {pinnedRepoIds.includes(repo.id) ? '×' : '+'}
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="empty-state">No configured repositories yet.</p>
+                        )}
                       </div>
+                      
+                      {/* Other Repositories Section */}
+                      {otherRepos.length > 0 && (
+                        <div className="other-repos-section">
+                          <h3 className="section-title">📁 Other Repositories ({otherRepos.length})</h3>
+                          <div className="repos-grid">
+                            {otherRepos.map(repo => (
+                              <div 
+                                key={repo.id} 
+                                className={`repo-card ${pinnedRepoIds.includes(repo.id) ? 'is-pinned' : ''}`}
+                              >
+                                <div className="repo-card-content" onClick={() => handleRepoSelect(repo)}>
+                                  <h3>{repo.name}</h3>
+                                  {repo.description && (
+                                    <p className="repo-description">{repo.description}</p>
+                                  )}
+                                  <div className="repo-meta">
+                                    {repo.private && <span className="private-badge">Private</span>}
+                                  </div>
+                                </div>
+                                <button 
+                                  className={`pin-button ${pinnedRepoIds.includes(repo.id) ? 'pinned' : ''}`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    togglePinRepo(repo.id);
+                                  }}
+                                  title={pinnedRepoIds.includes(repo.id) ? 'Unpin repository' : 'Pin repository'}
+                                >
+                                  {pinnedRepoIds.includes(repo.id) ? '×' : '+'}
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </>
                   )}
                 </div>
               ) : (
-                <div className="repo-browser">
+                <div className="repo-browser-container">
                   <div className="browser-header">
                     <button onClick={handleBackToRepos} className="back-button">
                       ← Back to Repos
                     </button>
                     <h3>{selectedRepo.name}</h3>
+                    {branches.length > 0 && (
+                      <select 
+                        value={selectedBranch} 
+                        onChange={(e) => handleBranchChange(e.target.value)}
+                        className="branch-selector"
+                      >
+                        {branches.map((branch) => (
+                          <option key={branch.name} value={branch.name}>
+                            {branch.name} {branch.name === defaultBranch && '(default)'}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                   </div>
                   
-                  {currentPath && (
-                    <div className="breadcrumb">
-                      <button onClick={handleNavigateUp} className="up-button">
-                        ↑ Up
-                      </button>
-                      <span className="current-path">/{currentPath}</span>
-                    </div>
-                  )}
-                  
-                  {loadingContents ? (
-                    <div className="loading">Loading contents...</div>
-                  ) : fileContent ? (
-                    <div className="file-viewer">
-                      <pre><code>{fileContent}</code></pre>
-                    </div>
-                  ) : (
-                    <div className="contents-list">
-                      {repoContents.map((item, idx) => (
-                        <div 
-                          key={idx} 
-                          className={`content-item ${item.type}`}
-                          onClick={() => handleItemClick(item)}
-                        >
-                          <span className="item-icon">
-                            {item.type === 'dir' ? '📁' : '📄'}
-                          </span>
-                          <span className="item-name">{item.name}</span>
+                  <div className="repo-browser-split">
+                    <div className="repo-browser-left">
+                      {currentPath && (
+                        <div className="breadcrumb">
+                          <button onClick={handleNavigateUp} className="up-button">
+                            ↑ Up
+                          </button>
+                          <span className="current-path">/{currentPath}</span>
                         </div>
-                      ))}
+                      )}
+                      
+                      {loadingContents ? (
+                        <div className="loading">Loading contents...</div>
+                      ) : fileContent ? (
+                        <div className="file-viewer">
+                          <pre><code>{fileContent}</code></pre>
+                        </div>
+                      ) : (
+                        <div className="contents-list">
+                          {repoContents.map((item, idx) => (
+                            <div 
+                              key={idx} 
+                              className={`content-item ${item.type}`}
+                              onClick={() => handleItemClick(item)}
+                            >
+                              <span className="item-icon">
+                                {item.type === 'dir' ? '📁' : '📄'}
+                              </span>
+                              <span className="item-name">{item.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  )}
+                    
+                    <div className="repo-browser-right">
+                      {hasSimanticFile && (
+                        <>
+                          <h4 className="commit-history-title">Test History</h4>
+                          <div className="test-history-section">
+                            {testHistory.length === 0 ? (
+                              <div className="empty-test-history">
+                                <p>No tests run yet. Click "Test" next to a commit to start.</p>
+                              </div>
+                            ) : (
+                              <div className="test-history-list">
+                                {testHistory.map((test) => (
+                                  <div key={test.id} className={`test-item test-${test.status}`}>
+                                    <div className="test-item-header">
+                                      <span className={`test-status-badge ${test.status}`}>
+                                        {test.status === 'running' ? '⏳' : test.status === 'passed' ? '✓' : '✗'}
+                                        {test.status.charAt(0).toUpperCase() + test.status.slice(1)}
+                                      </span>
+                                      <span className="test-timestamp">{test.timestamp}</span>
+                                    </div>
+                                    <div className="test-commit-info">
+                                      <span className="test-commit-sha">{test.commitSha.substring(0, 7)}</span>
+                                      <span className="test-commit-message">{test.commitMessage}</span>
+                                    </div>
+                                    {test.duration && (
+                                      <div className="test-duration">Duration: {test.duration}s</div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          <div className="section-divider"></div>
+                        </>
+                      )}
+                      
+                      <h4 className="commit-history-title">Commit History</h4>
+                      {loadingCommits ? (
+                        <div className="loading">Loading commits...</div>
+                      ) : (
+                        <div className="commit-history-list">
+                          {commitHistory.map((commit) => (
+                            <div key={commit.sha} className="commit-item">
+                              <div className="commit-item-content">
+                                <div className="commit-item-header">
+                                  <a 
+                                    href={commit.html_url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="commit-sha-link"
+                                    title={commit.sha}
+                                  >
+                                    {commit.sha.substring(0, 7)}
+                                  </a>
+                                  <span className="commit-item-date">{commit.date}</span>
+                                </div>
+                                <div className="commit-item-message">{commit.message}</div>
+                                <div className="commit-item-author">{commit.author}</div>
+                              </div>
+                              {hasSimanticFile && (
+                                <button className="commit-test-button" disabled>
+                                  Test
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
           )}
-        </div>
-
-        {/* Add your actual dashboard content here */}
-        <div className="dashboard-content">
-          <h2>Dashboard Content</h2>
-          <p>This is where your main dashboard features will go.</p>
-        </div>
-
-        {/* Add your actual dashboard content here */}
-        <div className="dashboard-content">
-          <h2>Dashboard Content</h2>
-          <p>This is where your main dashboard features will go.</p>
         </div>
       </div>
     </div>

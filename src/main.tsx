@@ -48,6 +48,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               <Dashboard />
             </ProtectedRoute>
           } />
+          <Route path="/dashboard/:owner/:repo" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
           <Route path="/invoice" element={
             <ProtectedRoute>
               <Invoice />
