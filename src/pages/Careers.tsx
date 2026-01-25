@@ -7,7 +7,7 @@ import './Careers.css';
 type Status = "idle" | "uploading" | "saving" | "done" | "error";
 
 export default function Careers() {
-	const [form, setForm] = useState({ name: "", email: "", location: "" });
+	const [form, setForm] = useState({ name: "", email: "", location: "", roleType: "full-time" });
 	const [file, setFile] = useState<File | null>(null);
 	const [progress, setProgress] = useState<number>(0);
 	const [status, setStatus] = useState<Status>("idle");
@@ -62,6 +62,7 @@ export default function Careers() {
 					name: form.name,
 					email: form.email.toLowerCase(),
 					location: form.location,
+					roleType: form.roleType,
 					resumeUrl,
 					resumeFileName: file.name,
 					resumeContentType: file.type,
@@ -70,7 +71,7 @@ export default function Careers() {
 				});
 
 			setStatus("done");
-			setForm({ name: "", email: "", location: "" });
+			setForm({ name: "", email: "", location: "", roleType: "full-time" });
 			setFile(null);
 			setProgress(0);
 		} catch (err: any) {
@@ -145,6 +146,20 @@ export default function Careers() {
 							placeholder="City, Country"
 							maxLength={100}
 						/>
+					</div>
+
+					<div className="form-group">
+						<label htmlFor="roleType">Role Type *</label>
+						<select
+							id="roleType"
+							name="roleType"
+							value={form.roleType}
+							onChange={(e) => setForm({ ...form, roleType: e.target.value })}
+							required
+						>
+							<option value="full-time">Full-Time</option>
+							<option value="internship">Internship</option>
+						</select>
 					</div>
 
 					<div className="form-group">
